@@ -31,6 +31,7 @@ public class LevelCamera : MonoBehaviour
         {
             var cameraPos = transform.position;
             cameraPos.z = _target.position.z;
+            cameraPos.y = _target.position.y;
             transform.position = cameraPos;
 
             yield return null;

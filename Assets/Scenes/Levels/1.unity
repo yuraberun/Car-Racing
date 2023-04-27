@@ -125,13 +125,13 @@ NavMeshSettings:
   m_NavMeshData: {fileID: 0}
 --- !u!114 &816435187 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8598363417053539274, guid: e3a93f94d95ac7b47bd62a46bf330ee0, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2283634889457320820, guid: e3a93f94d95ac7b47bd62a46bf330ee0, type: 3}
   m_PrefabInstance: {fileID: 8598363417865708601}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51d2e1b99a815bf479d7a0cb487b6819, type: 3}
+  m_Script: {fileID: 11500000, guid: bfcee52093db10a40b9c6a79f4940635, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &911843129
@@ -328,7 +328,7 @@ GameObject:
   - component: {fileID: 2016210042}
   - component: {fileID: 2016210041}
   - component: {fileID: 2016210040}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,7 +345,7 @@ TerrainCollider:
   m_Material: {fileID: 0}
   m_Enabled: 1
   m_TerrainData: {fileID: 15600000, guid: b66a035cde772434c8d65079b900f15d, type: 2}
-  m_EnableTreeColliders: 1
+  m_EnableTreeColliders: 0
 --- !u!218 &2016210041
 Terrain:
   m_ObjectHideFlags: 0
@@ -505,7 +505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8598363417053539286, guid: e3a93f94d95ac7b47bd62a46bf330ee0, type: 3}
       propertyPath: m_Name
-      value: Car
+      value: PlayerCar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e3a93f94d95ac7b47bd62a46bf330ee0, type: 3}

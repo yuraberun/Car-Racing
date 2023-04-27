@@ -1,0 +1,74 @@
+{
+    "name": "CarActions",
+    "maps": [
+        {
+            "name": "Main",
+            "id": "c231403f-0c6d-40e9-a9fc-d31d312d7ac3",
+            "actions": [
+                {
+                    "name": "Nitro",
+                    "type": "Button",
+                    "id": "78da97da-5aac-4d06-a8d4-cdf29ed784bc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateForward",
+                    "type": "Button",
+                    "id": "372ad4bc-1c03-454d-a90e-c534ebd7b200",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateBack",
+                    "type": "Button",
+                    "id": "78eb68be-8f11-4e04-b6e6-5a73ae1fde1e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ba1e3600-4509-466e-9f91-b481c521d3a2",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Nitro",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "57213c77-4317-48c4-84cc-51391ab17927",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateForward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3ec857d9-56b0-46b2-861c-ff1921a01833",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateBack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

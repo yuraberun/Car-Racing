@@ -1,84 +1,215 @@
 fileFormatVersion: 2
 guid: e152fbd885c60cd4d81ccb127373d24e
-timeCreated: 1507650293
-licenseType: Store
 ModelImporter:
-  serializedVersion: 19
-  fileIDToRecycleName:
-    100000: //RootNode
-    100002: MuscleCar_LOD0_Double_Chassis
-    100004: MuscleCar_LOD0_Double_LightCovers
-    100006: MuscleCar_LOD0_Double_Wheel
-    100008: MuscleCar_LOD1_Double_Chassis
-    100010: MuscleCar_LOD1_Double_LightCovers
-    100012: MuscleCar_LOD1_Double_Wheel
-    100014: MuscleCar_LOD2_Double_Chassis
-    100016: MuscleCar_LOD2_Double_LightCovers
-    100018: MuscleCar_LOD2_Double_Wheel
-    100020: MuscleCar_LOD3_Double_Chassis
-    100022: MuscleCar_LOD3_Double_LightCovers
-    100024: MuscleCar_LOD3_Double_Wheel
-    400000: //RootNode
-    400002: MuscleCar_LOD0_Double_Chassis
-    400004: MuscleCar_LOD0_Double_LightCovers
-    400006: MuscleCar_LOD0_Double_Wheel
-    400008: MuscleCar_LOD1_Double_Chassis
-    400010: MuscleCar_LOD1_Double_LightCovers
-    400012: MuscleCar_LOD1_Double_Wheel
-    400014: MuscleCar_LOD2_Double_Chassis
-    400016: MuscleCar_LOD2_Double_LightCovers
-    400018: MuscleCar_LOD2_Double_Wheel
-    400020: MuscleCar_LOD3_Double_Chassis
-    400022: MuscleCar_LOD3_Double_LightCovers
-    400024: MuscleCar_LOD3_Double_Wheel
-    2300000: MuscleCar_LOD0_Double_Chassis
-    2300002: MuscleCar_LOD0_Double_LightCovers
-    2300004: MuscleCar_LOD0_Double_Wheel
-    2300006: MuscleCar_LOD1_Double_Chassis
-    2300008: MuscleCar_LOD1_Double_LightCovers
-    2300010: MuscleCar_LOD1_Double_Wheel
-    2300012: MuscleCar_LOD2_Double_Chassis
-    2300014: MuscleCar_LOD2_Double_LightCovers
-    2300016: MuscleCar_LOD2_Double_Wheel
-    2300018: MuscleCar_LOD3_Double_Chassis
-    2300020: MuscleCar_LOD3_Double_LightCovers
-    2300022: MuscleCar_LOD3_Double_Wheel
-    3300000: MuscleCar_LOD0_Double_Chassis
-    3300002: MuscleCar_LOD0_Double_LightCovers
-    3300004: MuscleCar_LOD0_Double_Wheel
-    3300006: MuscleCar_LOD1_Double_Chassis
-    3300008: MuscleCar_LOD1_Double_LightCovers
-    3300010: MuscleCar_LOD1_Double_Wheel
-    3300012: MuscleCar_LOD2_Double_Chassis
-    3300014: MuscleCar_LOD2_Double_LightCovers
-    3300016: MuscleCar_LOD2_Double_Wheel
-    3300018: MuscleCar_LOD3_Double_Chassis
-    3300020: MuscleCar_LOD3_Double_LightCovers
-    3300022: MuscleCar_LOD3_Double_Wheel
-    4300000: MuscleCar_LOD3_Double_Chassis
-    4300002: MuscleCar_LOD3_Double_Wheel
-    4300004: MuscleCar_LOD2_Double_Chassis
-    4300006: MuscleCar_LOD2_Double_Wheel
-    4300008: MuscleCar_LOD1_Double_Chassis
-    4300010: MuscleCar_LOD1_Double_Wheel
-    4300012: MuscleCar_LOD0_Double_Chassis
-    4300014: MuscleCar_LOD0_Double_Wheel
-    4300016: MuscleCar_LOD0_Double_LightCovers
-    4300018: MuscleCar_LOD1_Double_LightCovers
-    4300020: MuscleCar_LOD2_Double_LightCovers
-    4300022: MuscleCar_LOD3_Double_LightCovers
-    7400000: Default Take
-    9500000: //RootNode
-    20500000: //RootNode
+  serializedVersion: 21300
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: MuscleCar_LOD0_Double_Chassis
+  - first:
+      1: 100004
+    second: MuscleCar_LOD0_Double_LightCovers
+  - first:
+      1: 100006
+    second: MuscleCar_LOD0_Double_Wheel
+  - first:
+      1: 100008
+    second: MuscleCar_LOD1_Double_Chassis
+  - first:
+      1: 100010
+    second: MuscleCar_LOD1_Double_LightCovers
+  - first:
+      1: 100012
+    second: MuscleCar_LOD1_Double_Wheel
+  - first:
+      1: 100014
+    second: MuscleCar_LOD2_Double_Chassis
+  - first:
+      1: 100016
+    second: MuscleCar_LOD2_Double_LightCovers
+  - first:
+      1: 100018
+    second: MuscleCar_LOD2_Double_Wheel
+  - first:
+      1: 100020
+    second: MuscleCar_LOD3_Double_Chassis
+  - first:
+      1: 100022
+    second: MuscleCar_LOD3_Double_LightCovers
+  - first:
+      1: 100024
+    second: MuscleCar_LOD3_Double_Wheel
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: MuscleCar_LOD0_Double_Chassis
+  - first:
+      4: 400004
+    second: MuscleCar_LOD0_Double_LightCovers
+  - first:
+      4: 400006
+    second: MuscleCar_LOD0_Double_Wheel
+  - first:
+      4: 400008
+    second: MuscleCar_LOD1_Double_Chassis
+  - first:
+      4: 400010
+    second: MuscleCar_LOD1_Double_LightCovers
+  - first:
+      4: 400012
+    second: MuscleCar_LOD1_Double_Wheel
+  - first:
+      4: 400014
+    second: MuscleCar_LOD2_Double_Chassis
+  - first:
+      4: 400016
+    second: MuscleCar_LOD2_Double_LightCovers
+  - first:
+      4: 400018
+    second: MuscleCar_LOD2_Double_Wheel
+  - first:
+      4: 400020
+    second: MuscleCar_LOD3_Double_Chassis
+  - first:
+      4: 400022
+    second: MuscleCar_LOD3_Double_LightCovers
+  - first:
+      4: 400024
+    second: MuscleCar_LOD3_Double_Wheel
+  - first:
+      23: 2300000
+    second: MuscleCar_LOD0_Double_Chassis
+  - first:
+      23: 2300002
+    second: MuscleCar_LOD0_Double_LightCovers
+  - first:
+      23: 2300004
+    second: MuscleCar_LOD0_Double_Wheel
+  - first:
+      23: 2300006
+    second: MuscleCar_LOD1_Double_Chassis
+  - first:
+      23: 2300008
+    second: MuscleCar_LOD1_Double_LightCovers
+  - first:
+      23: 2300010
+    second: MuscleCar_LOD1_Double_Wheel
+  - first:
+      23: 2300012
+    second: MuscleCar_LOD2_Double_Chassis
+  - first:
+      23: 2300014
+    second: MuscleCar_LOD2_Double_LightCovers
+  - first:
+      23: 2300016
+    second: MuscleCar_LOD2_Double_Wheel
+  - first:
+      23: 2300018
+    second: MuscleCar_LOD3_Double_Chassis
+  - first:
+      23: 2300020
+    second: MuscleCar_LOD3_Double_LightCovers
+  - first:
+      23: 2300022
+    second: MuscleCar_LOD3_Double_Wheel
+  - first:
+      33: 3300000
+    second: MuscleCar_LOD0_Double_Chassis
+  - first:
+      33: 3300002
+    second: MuscleCar_LOD0_Double_LightCovers
+  - first:
+      33: 3300004
+    second: MuscleCar_LOD0_Double_Wheel
+  - first:
+      33: 3300006
+    second: MuscleCar_LOD1_Double_Chassis
+  - first:
+      33: 3300008
+    second: MuscleCar_LOD1_Double_LightCovers
+  - first:
+      33: 3300010
+    second: MuscleCar_LOD1_Double_Wheel
+  - first:
+      33: 3300012
+    second: MuscleCar_LOD2_Double_Chassis
+  - first:
+      33: 3300014
+    second: MuscleCar_LOD2_Double_LightCovers
+  - first:
+      33: 3300016
+    second: MuscleCar_LOD2_Double_Wheel
+  - first:
+      33: 3300018
+    second: MuscleCar_LOD3_Double_Chassis
+  - first:
+      33: 3300020
+    second: MuscleCar_LOD3_Double_LightCovers
+  - first:
+      33: 3300022
+    second: MuscleCar_LOD3_Double_Wheel
+  - first:
+      43: 4300000
+    second: MuscleCar_LOD3_Double_Chassis
+  - first:
+      43: 4300002
+    second: MuscleCar_LOD3_Double_Wheel
+  - first:
+      43: 4300004
+    second: MuscleCar_LOD2_Double_Chassis
+  - first:
+      43: 4300006
+    second: MuscleCar_LOD2_Double_Wheel
+  - first:
+      43: 4300008
+    second: MuscleCar_LOD1_Double_Chassis
+  - first:
+      43: 4300010
+    second: MuscleCar_LOD1_Double_Wheel
+  - first:
+      43: 4300012
+    second: MuscleCar_LOD0_Double_Chassis
+  - first:
+      43: 4300014
+    second: MuscleCar_LOD0_Double_Wheel
+  - first:
+      43: 4300016
+    second: MuscleCar_LOD0_Double_LightCovers
+  - first:
+      43: 4300018
+    second: MuscleCar_LOD1_Double_LightCovers
+  - first:
+      43: 4300020
+    second: MuscleCar_LOD2_Double_LightCovers
+  - first:
+      43: 4300022
+    second: MuscleCar_LOD3_Double_LightCovers
+  - first:
+      74: 7400000
+    second: Default Take
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      205: 20500000
+    second: //RootNode
+  externalObjects: {}
   materials:
-    importMaterials: 0
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -86,12 +217,15 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
+    extraUserProperties: []
     clipAnimations: []
     isReadable: 1
   meshes:
@@ -103,26 +237,47 @@ ModelImporter:
     globalScale: 0.6
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 0
     importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -132,14 +287,18 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 0.6
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 0
   humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
