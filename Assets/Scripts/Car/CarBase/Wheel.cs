@@ -1,20 +1,21 @@
 using UnityEngine;
 
+[RequireComponent(typeof(WheelCollider))]
 public class Wheel : MonoBehaviour
 {
     private static float _detectRoadOffset = 0.2f;
 
     private BoxCollider _roadDetectCollider;
 
-    public WheelCollider Collider { get; private set; }
+    public WheelCollider WheelCollider { get; private set; }
 
     public bool OnRoad { get; private set; }
 
-    public void Init(WheelCollider wheelCollider)
+    public void Init()
     {
-        Collider = wheelCollider;
+        WheelCollider = GetComponent<WheelCollider>();
 
-        var size = Collider.radius * 2f + _detectRoadOffset;
+        var size = WheelCollider.radius * 2f + _detectRoadOffset;
 
         _roadDetectCollider = gameObject.AddComponent<BoxCollider>();
         _roadDetectCollider.size = new Vector3(size, size, 0.1f);

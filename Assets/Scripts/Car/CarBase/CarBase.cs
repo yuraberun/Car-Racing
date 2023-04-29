@@ -9,6 +9,8 @@ public class CarBase : MonoBehaviour
     
     [SerializeField] protected Transform centerOfMass;
 
+    [SerializeField] protected List<CarAxle> axles = new List<CarAxle>();
+
     [Header("Settings")]
     [SerializeField] protected float startSpeed;
     [SerializeField] protected float autoSpeed;
@@ -41,13 +43,13 @@ public class CarBase : MonoBehaviour
     {
         rb.centerOfMass = centerOfMass.transform.localPosition;
 
-        foreach (var wheelCollider in GetComponentsInChildren<WheelCollider>())
+        foreach (var axle in axles)
         {
-            var obj = wheelCollider.gameObject;
-            var wheel = obj.AddComponent<Wheel>();
+            axle.leftWheel.Init();
+            axle.rightWheel.Init();
 
-            wheel.Init(wheelCollider);
-            wheels.Add(wheel);
+            wheels.Add(axle.leftWheel);
+            wheels.Add(axle.rightWheel);
         }
 
         AmoutOfNitro = maxAmountOfNitro;
@@ -87,10 +89,18 @@ public class CarBase : MonoBehaviour
         while (true)
         {
             if (OnRoad && Speed < maxAutoSpeed)
-                rb.AddForce(Direction * autoSpeed * Time.deltaTime, ForceMode.Acceleration);
+            {
+                var force = Direction * autoSpeed * Time.deltaTime;
 
-            if (!IsAccelerating && Speed > maxAutoSpeed)
-                rb.AddForce(-Direction * brakePower * Time.deltaTime, ForceMode.Acceleration);
+                rb.AddForce(force, ForceMode.Acceleration);
+            }
+
+            if (OnRoad && !IsAccelerating && Speed > maxAutoSpeed)
+            {
+                var force = -Direction * brakePower * Time.deltaTime;
+
+                rb.AddForce(force, ForceMode.Acceleration);
+            }
 
             yield return null;
         }
