@@ -23,23 +23,32 @@ public class CarBase : MonoBehaviour
     protected Coroutine rotateCoroutine;
     protected Coroutine accelerationCoroutine;
 
-    protected int wheelsCount = 0;
-    protected int wheelsOnRoad = 0;
+    protected List<Wheel> wheels = new List<Wheel>();
 
     public Vector3 Direction => new Vector3(0f, -Mathf.Sin(transform.eulerAngles.x * Mathf.Deg2Rad), Mathf.Cos(transform.eulerAngles.x * Mathf.Deg2Rad));
+
+    public RotateDirection CurrRotateDirection  { get; protected set; }
 
     public float Speed => rb.velocity.magnitude;
     public float AmoutOfNitro { get; protected set; }
 
-    public bool OnRoad => wheelsOnRoad != 0;
-    public bool CanRotate => wheelsOnRoad != wheelsCount;
+    public bool OnRoad => wheels.FindAll(wheel => wheel.OnRoad).Count != 0;
+    public bool CanRotate => wheels.FindAll(wheel => wheel.OnRoad).Count <= 2;
 
     public bool IsAccelerating { get; protected set; }
 
     public virtual void Init()
     {
         rb.centerOfMass = centerOfMass.transform.localPosition;
-        wheelsCount = GetComponentsInChildren<WheelCollider>().Length;
+
+        foreach (var wheelCollider in GetComponentsInChildren<WheelCollider>())
+        {
+            var obj = wheelCollider.gameObject;
+            var wheel = obj.AddComponent<Wheel>();
+
+            wheel.Init(wheelCollider);
+            wheels.Add(wheel);
+        }
 
         AmoutOfNitro = maxAmountOfNitro;
     }
@@ -52,6 +61,23 @@ public class CarBase : MonoBehaviour
     public virtual void Deactivate()
     {
         StopAllCoroutines();
+    }
+
+    protected void StartAutoMove()
+    {
+        if (autoMoveCoroutine != null)
+            StopCoroutine(autoMoveCoroutine);
+
+        autoMoveCoroutine = StartCoroutine(AutoMove());
+    }
+
+    protected void StopAutoMove()
+    {
+        if (autoMoveCoroutine != null)
+            StopCoroutine(autoMoveCoroutine);
+
+        rb.velocity = Vector3.zero;
+        rb.rotation = Quaternion.identity;
     }
 
     protected IEnumerator AutoMove()
@@ -70,6 +96,22 @@ public class CarBase : MonoBehaviour
         }
     }
 
+    protected void StartRotate(RotateDirection rotateDirection)
+    {
+        CurrRotateDirection = rotateDirection;
+
+        if (rotateCoroutine != null)
+                StopCoroutine(rotateCoroutine);
+
+        rotateCoroutine = StartCoroutine(Rotate(rotateDirection));
+    }
+
+    protected void EndRotate()
+    {
+        if (rotateCoroutine != null)
+            StopCoroutine(rotateCoroutine);
+    }
+
     protected IEnumerator Rotate(RotateDirection rotateDirection)
     {
         var speed = rotateSpeed * ((rotateDirection == RotateDirection.Back) ? -1 : 1);
@@ -83,6 +125,22 @@ public class CarBase : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    protected void StartAcceleration()
+    {
+        if (accelerationCoroutine != null)
+            StopCoroutine(accelerationCoroutine);
+
+        accelerationCoroutine = StartCoroutine(Accelerate());
+    }
+
+    protected void EndAcceleration()
+    {
+        if (accelerationCoroutine != null)
+            StopCoroutine(accelerationCoroutine);
+
+        IsAccelerating = false;
     }
 
     protected virtual IEnumerator Accelerate()
@@ -104,22 +162,6 @@ public class CarBase : MonoBehaviour
             }
 
             yield return null;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Road"))
-        {
-            wheelsOnRoad ++;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Road"))
-        {
-            wheelsOnRoad --;
         }
     }
 }

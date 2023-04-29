@@ -29,65 +29,30 @@ public class PlayerCar : CarBase
 
     private void SubscribeToInput()
     {
+        //Auto Move Switch
+        _carActions.Main.EnableAutoMove.started += (callBack) => StartAutoMove();
+        _carActions.Main.DisableAutoMove.started += (callBack) => StopAutoMove();
+
         //Nitro
-        _carActions.Main.Nitro.started += (callBack) => 
-        {
-            accelerationCoroutine = StartCoroutine(Accelerate());
-        };
-
-        _carActions.Main.Nitro.canceled += (callBack) =>
-        {
-            if (accelerationCoroutine != null)
-                StopCoroutine(accelerationCoroutine);
-
-            IsAccelerating = false;
-        };
+        _carActions.Main.Nitro.started += (callBack) => StartAcceleration();
+        _carActions.Main.Nitro.canceled += (callBack) => EndAcceleration();
 
         //Rotate Forward
-        _carActions.Main.RotateForward.started += (callBack) => 
-        {
-            if (rotateCoroutine != null)
-                StopCoroutine(rotateCoroutine);
-
-            rotateCoroutine = StartCoroutine(Rotate(RotateDirection.Forward));
-        };
+        _carActions.Main.RotateForward.started += (callBack) => StartRotate(RotateDirection.Forward);
 
         _carActions.Main.RotateForward.canceled += (callBack) =>
         {
-            if (rotateCoroutine != null && !_carActions.Main.RotateBack.IsPressed())
-                StopCoroutine(rotateCoroutine);
+            if (!_carActions.Main.RotateBack.IsPressed())
+                EndRotate();
         };
 
         //Rotate Back
-        _carActions.Main.RotateBack.started += (callBack) => 
-        {
-            if (rotateCoroutine != null)
-                StopCoroutine(rotateCoroutine);
-
-            rotateCoroutine = StartCoroutine(Rotate(RotateDirection.Back));
-        };
+        _carActions.Main.RotateBack.started += (callBack) => StartRotate(RotateDirection.Back);
 
         _carActions.Main.RotateBack.canceled += (callBack) =>
         {
-            if (rotateCoroutine != null && !_carActions.Main.RotateForward.IsPressed())
-                StopCoroutine(rotateCoroutine);
-        };
-
-        //Auto Move Switch
-        _carActions.Main.EnableAutoMove.started += (callBack) => 
-        {
-            //ResetMotorTorque(0f, 0f);
-
-            autoMoveCoroutine = StartCoroutine(AutoMove());
-        };
-
-        _carActions.Main.DisableAutoMove.started += (callBack) => 
-        {
-            if (autoMoveCoroutine != null)
-                StopCoroutine(autoMoveCoroutine);
-
-            rb.velocity = Vector3.zero;
-            //ResetMotorTorque(0f, 9999f);
+            if (!_carActions.Main.RotateForward.IsPressed())
+                EndRotate();
         };
     }
 
