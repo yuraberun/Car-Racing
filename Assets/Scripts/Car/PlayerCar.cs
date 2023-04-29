@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class PlayerCar : CarBase
 {
     private CarActions _carActions;
@@ -38,7 +40,7 @@ public class PlayerCar : CarBase
             if (accelerationCoroutine != null)
                 StopCoroutine(accelerationCoroutine);
 
-            IsAccelerate = false;
+            IsAccelerating = false;
         };
 
         //Rotate Forward
@@ -47,10 +49,7 @@ public class PlayerCar : CarBase
             if (rotateCoroutine != null)
                 StopCoroutine(rotateCoroutine);
 
-            if (!OnRoad)
-            {
-                rotateCoroutine = StartCoroutine(Rotate(RotateDirection.Forward));
-            }
+            rotateCoroutine = StartCoroutine(Rotate(RotateDirection.Forward));
         };
 
         _carActions.Main.RotateForward.canceled += (callBack) =>
@@ -65,16 +64,30 @@ public class PlayerCar : CarBase
             if (rotateCoroutine != null)
                 StopCoroutine(rotateCoroutine);
 
-            if (!OnRoad)
-            {
-                rotateCoroutine = StartCoroutine(Rotate(RotateDirection.Back));
-            }
+            rotateCoroutine = StartCoroutine(Rotate(RotateDirection.Back));
         };
 
         _carActions.Main.RotateBack.canceled += (callBack) =>
         {
             if (rotateCoroutine != null && !_carActions.Main.RotateForward.IsPressed())
                 StopCoroutine(rotateCoroutine);
+        };
+
+        //Auto Move Switch
+        _carActions.Main.EnableAutoMove.started += (callBack) => 
+        {
+            //ResetMotorTorque(0f, 0f);
+
+            autoMoveCoroutine = StartCoroutine(AutoMove());
+        };
+
+        _carActions.Main.DisableAutoMove.started += (callBack) => 
+        {
+            if (autoMoveCoroutine != null)
+                StopCoroutine(autoMoveCoroutine);
+
+            rb.velocity = Vector3.zero;
+            //ResetMotorTorque(0f, 9999f);
         };
     }
 

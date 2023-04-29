@@ -252,11 +252,11 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0.12}
   m_Radius: 0.3
   m_SuspensionSpring:
-    spring: 35000
-    damper: 100000
+    spring: 6000
+    damper: 6000
     targetPosition: 0.5
-  m_SuspensionDistance: 0
-  m_ForceAppPointDistance: 0
+  m_SuspensionDistance: 0.01
+  m_ForceAppPointDistance: 1
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
@@ -416,11 +416,11 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0.12}
   m_Radius: 0.3
   m_SuspensionSpring:
-    spring: 35000
-    damper: 100000
+    spring: 6000
+    damper: 6000
     targetPosition: 0.5
-  m_SuspensionDistance: 0
-  m_ForceAppPointDistance: 0
+  m_SuspensionDistance: 0.01
+  m_ForceAppPointDistance: 1
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
@@ -912,11 +912,11 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0.12}
   m_Radius: 0.3
   m_SuspensionSpring:
-    spring: 35000
-    damper: 100000
+    spring: 6000
+    damper: 6000
     targetPosition: 0.5
-  m_SuspensionDistance: 0
-  m_ForceAppPointDistance: 0
+  m_SuspensionDistance: 0.01
+  m_ForceAppPointDistance: 1
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
@@ -1072,7 +1072,8 @@ GameObject:
   - component: {fileID: 2283634889457320820}
   - component: {fileID: 8598363417053539272}
   - component: {fileID: 8598363417053539273}
-  m_Layer: 0
+  - component: {fileID: 816435191}
+  m_Layer: 7
   m_Name: Car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1111,26 +1112,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 8598363417053539272}
   centerOfMass: {fileID: 8598363417007586057}
-  axles:
-  - leftWheel:
-      collider: {fileID: 8598363416556229909}
-      motorPowerCoef: 1
-    RightWheel:
-      collider: {fileID: 8598363418009999173}
-      motorPowerCoef: 1
-  - leftWheel:
-      collider: {fileID: 8598363416591278412}
-      motorPowerCoef: 0
-    RightWheel:
-      collider: {fileID: 8598363416993022481}
-      motorPowerCoef: 0
-  autoSpeed: 15
-  motorPower: 800
-  brakePower: 500
-  maxSpeed: 27
-  aceleration: 10
-  maxAmountOfNitro: 2
-  rotateSpeed: 150
+  startSpeed: 2
+  autoSpeed: 125
+  nitroPower: 400
+  brakePower: 75
+  maxAutoSpeed: 13
+  maxSpeed: 26
+  maxAmountOfNitro: 100
+  rotateSpeed: 225
 --- !u!54 &8598363417053539272
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1140,8 +1129,8 @@ Rigidbody:
   m_GameObject: {fileID: 8598363417053539286}
   serializedVersion: 2
   m_Mass: 1000
-  m_Drag: 0.01
-  m_AngularDrag: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -1158,8 +1147,22 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.4, y: 1, z: 2.2}
-  m_Center: {x: 0, y: 0, z: 0.25}
+  m_Size: {x: 1.4, y: 0.9, z: 3}
+  m_Center: {x: 0, y: 0.15, z: 0.15}
+--- !u!64 &816435191
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8598363417053539286}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300004, guid: e152fbd885c60cd4d81ccb127373d24e, type: 3}
 --- !u!1 &8598363417059942600
 GameObject:
   m_ObjectHideFlags: 0
@@ -2404,11 +2407,11 @@ WheelCollider:
   m_Center: {x: 0, y: 0, z: 0.12}
   m_Radius: 0.3
   m_SuspensionSpring:
-    spring: 35000
-    damper: 100000
+    spring: 6000
+    damper: 6000
     targetPosition: 0.5
-  m_SuspensionDistance: 0
-  m_ForceAppPointDistance: 0
+  m_SuspensionDistance: 0.01
+  m_ForceAppPointDistance: 1
   m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:

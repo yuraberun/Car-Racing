@@ -31,6 +31,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "EnableAutoMove",
+                    "type": "Button",
+                    "id": "2f12ae59-b016-4624-9d8c-34f22396f40d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DisableAutoMove",
+                    "type": "Button",
+                    "id": "916bde01-77bf-4c28-92f8-af8475bf7cd3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -48,7 +66,7 @@
                 {
                     "name": "",
                     "id": "57213c77-4317-48c4-84cc-51391ab17927",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -59,11 +77,33 @@
                 {
                     "name": "",
                     "id": "3ec857d9-56b0-46b2-861c-ff1921a01833",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "RotateBack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "439797a9-18d4-450d-b854-daa6e83961c1",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EnableAutoMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "32150570-e401-4138-b300-6d023e7fdfe2",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DisableAutoMove",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

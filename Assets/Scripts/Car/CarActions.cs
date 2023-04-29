@@ -53,6 +53,24 @@ public partial class @CarActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EnableAutoMove"",
+                    ""type"": ""Button"",
+                    ""id"": ""2f12ae59-b016-4624-9d8c-34f22396f40d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DisableAutoMove"",
+                    ""type"": ""Button"",
+                    ""id"": ""916bde01-77bf-4c28-92f8-af8475bf7cd3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -70,7 +88,7 @@ public partial class @CarActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""57213c77-4317-48c4-84cc-51391ab17927"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -81,11 +99,33 @@ public partial class @CarActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""3ec857d9-56b0-46b2-861c-ff1921a01833"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""RotateBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""439797a9-18d4-450d-b854-daa6e83961c1"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EnableAutoMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""32150570-e401-4138-b300-6d023e7fdfe2"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DisableAutoMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -99,6 +139,8 @@ public partial class @CarActions: IInputActionCollection2, IDisposable
         m_Main_Nitro = m_Main.FindAction("Nitro", throwIfNotFound: true);
         m_Main_RotateForward = m_Main.FindAction("RotateForward", throwIfNotFound: true);
         m_Main_RotateBack = m_Main.FindAction("RotateBack", throwIfNotFound: true);
+        m_Main_EnableAutoMove = m_Main.FindAction("EnableAutoMove", throwIfNotFound: true);
+        m_Main_DisableAutoMove = m_Main.FindAction("DisableAutoMove", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -163,6 +205,8 @@ public partial class @CarActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_Nitro;
     private readonly InputAction m_Main_RotateForward;
     private readonly InputAction m_Main_RotateBack;
+    private readonly InputAction m_Main_EnableAutoMove;
+    private readonly InputAction m_Main_DisableAutoMove;
     public struct MainActions
     {
         private @CarActions m_Wrapper;
@@ -170,6 +214,8 @@ public partial class @CarActions: IInputActionCollection2, IDisposable
         public InputAction @Nitro => m_Wrapper.m_Main_Nitro;
         public InputAction @RotateForward => m_Wrapper.m_Main_RotateForward;
         public InputAction @RotateBack => m_Wrapper.m_Main_RotateBack;
+        public InputAction @EnableAutoMove => m_Wrapper.m_Main_EnableAutoMove;
+        public InputAction @DisableAutoMove => m_Wrapper.m_Main_DisableAutoMove;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -188,6 +234,12 @@ public partial class @CarActions: IInputActionCollection2, IDisposable
             @RotateBack.started += instance.OnRotateBack;
             @RotateBack.performed += instance.OnRotateBack;
             @RotateBack.canceled += instance.OnRotateBack;
+            @EnableAutoMove.started += instance.OnEnableAutoMove;
+            @EnableAutoMove.performed += instance.OnEnableAutoMove;
+            @EnableAutoMove.canceled += instance.OnEnableAutoMove;
+            @DisableAutoMove.started += instance.OnDisableAutoMove;
+            @DisableAutoMove.performed += instance.OnDisableAutoMove;
+            @DisableAutoMove.canceled += instance.OnDisableAutoMove;
         }
 
         private void UnregisterCallbacks(IMainActions instance)
@@ -201,6 +253,12 @@ public partial class @CarActions: IInputActionCollection2, IDisposable
             @RotateBack.started -= instance.OnRotateBack;
             @RotateBack.performed -= instance.OnRotateBack;
             @RotateBack.canceled -= instance.OnRotateBack;
+            @EnableAutoMove.started -= instance.OnEnableAutoMove;
+            @EnableAutoMove.performed -= instance.OnEnableAutoMove;
+            @EnableAutoMove.canceled -= instance.OnEnableAutoMove;
+            @DisableAutoMove.started -= instance.OnDisableAutoMove;
+            @DisableAutoMove.performed -= instance.OnDisableAutoMove;
+            @DisableAutoMove.canceled -= instance.OnDisableAutoMove;
         }
 
         public void RemoveCallbacks(IMainActions instance)
@@ -223,5 +281,7 @@ public partial class @CarActions: IInputActionCollection2, IDisposable
         void OnNitro(InputAction.CallbackContext context);
         void OnRotateForward(InputAction.CallbackContext context);
         void OnRotateBack(InputAction.CallbackContext context);
+        void OnEnableAutoMove(InputAction.CallbackContext context);
+        void OnDisableAutoMove(InputAction.CallbackContext context);
     }
 }
