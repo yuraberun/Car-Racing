@@ -9,120 +9,111 @@ public class CarBase : MonoBehaviour
     
     [SerializeField] protected Transform centerOfMass;
 
-    [SerializeField] protected List<CarAxle> axles = new List<CarAxle>();
+    [SerializeField] protected List<CarAxle> axles;
 
     [Header("Settings")]
-    [SerializeField] protected float startSpeed;
-    [SerializeField] protected float autoSpeed;
-    [SerializeField] protected float nitroPower;
+    [SerializeField] protected float motorPower;
     [SerializeField] protected float brakePower;
-    [SerializeField] protected float maxAutoSpeed;
-    [SerializeField] protected float maxSpeed;
+    [SerializeField] protected float nitroPower;
+
+    [SerializeField] protected float startMoveSpeed;
+    [SerializeField] protected float maxAutoMoveSpeed;
+
     [SerializeField] protected float maxAmountOfNitro;
     [SerializeField] protected float rotateSpeed;
 
-    protected Coroutine autoMoveCoroutine;
-    protected Coroutine rotateCoroutine;
-    protected Coroutine accelerationCoroutine;
-
-    protected List<Wheel> wheels = new List<Wheel>();
-
-    public Vector3 Direction => new Vector3(0f, -Mathf.Sin(transform.eulerAngles.x * Mathf.Deg2Rad), Mathf.Cos(transform.eulerAngles.x * Mathf.Deg2Rad));
+    private Coroutine _autoMoveCoroutine;
+    private Coroutine _rotateCoroutine;
+    private Coroutine _accelerationCoroutine;
 
     public RotateDirection CurrRotateDirection  { get; protected set; }
 
     public float Speed => rb.velocity.magnitude;
     public float AmoutOfNitro { get; protected set; }
 
-    public bool OnRoad => wheels.FindAll(wheel => wheel.OnRoad).Count != 0;
-    public bool CanRotate => wheels.FindAll(wheel => wheel.OnRoad).Count <= 2;
+    public bool CanRotate => true;//wheels.FindAll(wheel => wheel.OnRoad).Count <= 2;
 
-    public bool IsAccelerating { get; protected set; }
+    public bool IsNitroUsed { get; protected set; }
 
     public virtual void Init()
     {
         rb.centerOfMass = centerOfMass.transform.localPosition;
 
         foreach (var axle in axles)
-        {
-            axle.leftWheel.Init();
-            axle.rightWheel.Init();
-
-            wheels.Add(axle.leftWheel);
-            wheels.Add(axle.rightWheel);
-        }
-
+            axle.Init();
+        
         AmoutOfNitro = maxAmountOfNitro;
     }
 
-    public virtual void Activate()
+    public void StartAutoMove()
     {
-        autoMoveCoroutine = StartCoroutine(AutoMove());
+        if (_autoMoveCoroutine != null)
+            StopCoroutine(_autoMoveCoroutine);
+
+        _autoMoveCoroutine = StartCoroutine(AutoMove());
     }
 
-    public virtual void Deactivate()
+    public void StopAutoMove()
     {
-        StopAllCoroutines();
-    }
-
-    protected void StartAutoMove()
-    {
-        if (autoMoveCoroutine != null)
-            StopCoroutine(autoMoveCoroutine);
-
-        autoMoveCoroutine = StartCoroutine(AutoMove());
-    }
-
-    protected void StopAutoMove()
-    {
-        if (autoMoveCoroutine != null)
-            StopCoroutine(autoMoveCoroutine);
+        if (_autoMoveCoroutine != null)
+            StopCoroutine(_autoMoveCoroutine);
 
         rb.velocity = Vector3.zero;
         rb.rotation = Quaternion.identity;
     }
 
-    protected IEnumerator AutoMove()
+    private IEnumerator AutoMove()
     {
-        rb.velocity = new Vector3(0, 0, startSpeed);
+        rb.velocity = new Vector3(0, 0, startMoveSpeed);
+
+        bool acceleration = false;
+        bool deceleration = false;
 
         while (true)
         {
-            if (OnRoad && Speed < maxAutoSpeed)
+            if (!acceleration && Speed < maxAutoMoveSpeed)
             {
-                var force = Direction * autoSpeed * Time.deltaTime;
+                acceleration = true;
+                deceleration = false;
 
-                rb.AddForce(force, ForceMode.Acceleration);
+                ResetWheelsMotorAndBrakePower(motorPower, 0f);
             }
 
-            if (OnRoad && !IsAccelerating && Speed > maxAutoSpeed)
+            if (!deceleration && Speed > maxAutoMoveSpeed)
             {
-                var force = -Direction * brakePower * Time.deltaTime;
+                acceleration = false;
+                deceleration = true;
 
-                rb.AddForce(force, ForceMode.Acceleration);
+                ResetWheelsMotorAndBrakePower(0f, brakePower);
             }
 
             yield return null;
         }
     }
 
-    protected void StartRotate(RotateDirection rotateDirection)
+    private void ResetWheelsMotorAndBrakePower(float motorPower, float brakePower)
+    {
+        foreach (var axle in axles)
+            axle.ResetWheelsMotorAndBrakePower(motorPower, brakePower); 
+    }
+
+    public void StartRotate(RotateDirection rotateDirection)
     {
         CurrRotateDirection = rotateDirection;
 
-        if (rotateCoroutine != null)
-                StopCoroutine(rotateCoroutine);
+        if (_rotateCoroutine != null)
+                StopCoroutine(_rotateCoroutine);
 
-        rotateCoroutine = StartCoroutine(Rotate(rotateDirection));
+        _rotateCoroutine = StartCoroutine(Rotate(rotateDirection));
     }
 
-    protected void EndRotate()
+    public void EndRotate()
     {
-        if (rotateCoroutine != null)
-            StopCoroutine(rotateCoroutine);
+        if (_rotateCoroutine != null)
+            StopCoroutine(_rotateCoroutine);
     }
 
-    protected IEnumerator Rotate(RotateDirection rotateDirection)
+    private IEnumerator Rotate(RotateDirection rotateDirection)
     {
         var speed = rotateSpeed * ((rotateDirection == RotateDirection.Back) ? -1 : 1);
 
@@ -137,38 +128,40 @@ public class CarBase : MonoBehaviour
         }
     }
 
-    protected void StartAcceleration()
+    public void StartAcceleration()
     {
-        if (accelerationCoroutine != null)
-            StopCoroutine(accelerationCoroutine);
+        if (_accelerationCoroutine != null)
+            StopCoroutine(_accelerationCoroutine);
 
-        accelerationCoroutine = StartCoroutine(Accelerate());
+        _accelerationCoroutine = StartCoroutine(Accelerate());
     }
 
-    protected void EndAcceleration()
+    public void EndAcceleration()
     {
-        if (accelerationCoroutine != null)
-            StopCoroutine(accelerationCoroutine);
+        if (_accelerationCoroutine != null)
+            StopCoroutine(_accelerationCoroutine);
 
-        IsAccelerating = false;
+        IsNitroUsed = false;
     }
 
-    protected virtual IEnumerator Accelerate()
+    private IEnumerator Accelerate()
     {   
         while (true)
         {
-            if (Speed < maxSpeed && AmoutOfNitro > 0f)
+            if (AmoutOfNitro > 0f)
             {
-                IsAccelerating = true;
+                IsNitroUsed = true;
 
-                rb.AddForce(Direction * nitroPower * Time.deltaTime, ForceMode.Acceleration);
+                var direction = new Vector3(0f, -Mathf.Sin(transform.eulerAngles.x * Mathf.Deg2Rad), Mathf.Cos(transform.eulerAngles.x * Mathf.Deg2Rad));
+
+                rb.AddForce(direction * nitroPower * Time.deltaTime, ForceMode.Acceleration);
 
                 AmoutOfNitro -= Time.deltaTime;
             }
 
             else
             {
-                IsAccelerating = false;
+                IsNitroUsed = false;
             }
 
             yield return null;

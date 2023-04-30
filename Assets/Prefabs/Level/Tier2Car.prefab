@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3377968329991709777}
-  - component: {fileID: 3377968329991709783}
   - component: {fileID: 3377968329991709776}
+  - component: {fileID: 3346204062532244976}
   m_Layer: 7
-  m_Name: PlayerCar
+  m_Name: Tier2Car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,33 +36,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3377968329991709783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3377968329991709778}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfcee52093db10a40b9c6a79f4940635, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb: {fileID: 3377968329991709776}
-  centerOfMass: {fileID: 3377968330633375464}
-  axles:
-  - leftWheel: {fileID: 3377968330571214480}
-    rightWheel: {fileID: 3377968330253517556}
-  - leftWheel: {fileID: 3377968330165307991}
-    rightWheel: {fileID: 3377968330461255385}
-  startSpeed: 4
-  autoSpeed: 300
-  nitroPower: 400
-  brakePower: 200
-  maxAutoSpeed: 12
-  maxSpeed: 25
-  maxAmountOfNitro: 100
-  rotateSpeed: 200
 --- !u!54 &3377968329991709776
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -79,6 +52,34 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 98
   m_CollisionDetection: 0
+--- !u!114 &3346204062532244976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3377968329991709778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51d2e1b99a815bf479d7a0cb487b6819, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 3377968329991709776}
+  centerOfMass: {fileID: 3377968330633375464}
+  axles:
+  - leftWheel: {fileID: 3377968330571214480}
+    rightWheel: {fileID: 3377968330253517556}
+    _motorPowerCoef: 1
+  - leftWheel: {fileID: 3377968330165307991}
+    rightWheel: {fileID: 3377968330461255385}
+    _motorPowerCoef: 0
+  motorPower: 2200
+  brakePower: 1500
+  nitroPower: 500
+  startMoveSpeed: 3
+  maxAutoMoveSpeed: 12
+  maxAmountOfNitro: 999
+  rotateSpeed: 200
 --- !u!1 &3377968330165307980
 GameObject:
   m_ObjectHideFlags: 0

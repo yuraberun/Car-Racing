@@ -1,8 +1,8 @@
 {
-    "name": "CarActions",
+    "name": "PlayerInputs",
     "maps": [
         {
-            "name": "Main",
+            "name": "Car",
             "id": "c231403f-0c6d-40e9-a9fc-d31d312d7ac3",
             "actions": [
                 {
