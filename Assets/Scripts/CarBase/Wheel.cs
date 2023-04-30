@@ -6,7 +6,7 @@ public class Wheel : MonoBehaviour
 {
     [SerializeField] private GameObject _visualWheel;
 
-    private BoxCollider _roadDetectCollider;
+    private SphereCollider _roadDetectCollider;
 
     private Coroutine _updateVisualCoroutine;
 
@@ -18,10 +18,8 @@ public class Wheel : MonoBehaviour
     {
         WheelCollider = GetComponent<WheelCollider>();
 
-        var size = WheelCollider.radius * 2f + blockRotationDistance * 2f;
-
-        _roadDetectCollider = gameObject.AddComponent<BoxCollider>();
-        _roadDetectCollider.size = new Vector3(0.1f, size, size);
+        _roadDetectCollider = gameObject.AddComponent<SphereCollider>();
+        _roadDetectCollider.radius = WheelCollider.radius + blockRotationDistance;
         _roadDetectCollider.isTrigger = true;
 
         _updateVisualCoroutine = StartCoroutine(UpdateVisual());

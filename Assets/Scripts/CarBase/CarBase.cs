@@ -9,8 +9,6 @@ public class CarBase : MonoBehaviour
 
     [Header("Components")]
     public Rigidbody rb;
-
-    [SerializeField] protected CarRotationStabilizer carRotationStabilizer;
     
     [SerializeField] protected Transform centerOfMass;
 
@@ -30,6 +28,8 @@ public class CarBase : MonoBehaviour
     [Header("Rotate")]
     [SerializeField] protected float rotateSpeed;
     [SerializeField] protected float angularVelocity;
+
+    protected CarRotationStabilizer carRotationStabilizer;
 
     private Coroutine _autoMoveCoroutine;
     private Coroutine _rotateCoroutine;
@@ -61,6 +61,7 @@ public class CarBase : MonoBehaviour
         
         AmoutOfNitro = maxAmountOfNitro;
 
+        carRotationStabilizer = gameObject.AddComponent<CarRotationStabilizer>();
         carRotationStabilizer.Init(this, carRulesConfig.TimeToStartStabilizeRotation, carRulesConfig.StabilizeRotationSpeed);
     }
 

@@ -1,121 +1,346 @@
 fileFormatVersion: 2
 guid: 2c9905fc8f65a4003856f80c2d000216
 ModelImporter:
-  serializedVersion: 22
-  fileIDToRecycleName:
-    100000: //RootNode
-    100002: detail_bullbar_37
-    100004: detail_engine_49
-    100006: detail_exhaustVertical_35
-    100008: detail_exhaustVertical_36
-    100010: detail_fenderRounded_51
-    100012: detail_fenderRounded_52
-    100014: detail_fenderSquare_31
-    100016: detail_fenderSquare_32
-    100018: detail_fenderSquare_33
-    100020: detail_fenderSquare_34
-    100022: engine_intakeArrow_48
-    100024: hood_truck_24
-    100026: trunk_station_22
-    100028: wall_paperFrame_46
-    100030: wall_paperFrame_47
-    100032: windshield_square_23
-    400000: //RootNode
-    400002: detail_bullbar_37
-    400004: detail_engine_49
-    400006: detail_exhaustVertical_35
-    400008: detail_exhaustVertical_36
-    400010: detail_fenderRounded_51
-    400012: detail_fenderRounded_52
-    400014: detail_fenderSquare_31
-    400016: detail_fenderSquare_32
-    400018: detail_fenderSquare_33
-    400020: detail_fenderSquare_34
-    400022: engine_intakeArrow_48
-    400024: hood_truck_24
-    400026: trunk_station_22
-    400028: wall_paperFrame_46
-    400030: wall_paperFrame_47
-    400032: windshield_square_23
-    2100000: tire
-    2100002: _defaultMat
-    2100004: lightRed
-    2100006: blueSteel
-    2100008: black
-    2100010: light
-    2100012: orangeSteel
-    2100014: glass
-    2100016: wood
-    2300000: detail_bullbar_37
-    2300002: detail_engine_49
-    2300004: detail_exhaustVertical_35
-    2300006: detail_exhaustVertical_36
-    2300008: detail_fenderRounded_51
-    2300010: detail_fenderRounded_52
-    2300012: detail_fenderSquare_31
-    2300014: detail_fenderSquare_32
-    2300016: detail_fenderSquare_33
-    2300018: detail_fenderSquare_34
-    2300020: engine_intakeArrow_48
-    2300022: hood_truck_24
-    2300024: trunk_station_22
-    2300026: wall_paperFrame_46
-    2300028: wall_paperFrame_47
-    2300030: windshield_square_23
-    3300000: detail_bullbar_37
-    3300002: detail_engine_49
-    3300004: detail_exhaustVertical_35
-    3300006: detail_exhaustVertical_36
-    3300008: detail_fenderRounded_51
-    3300010: detail_fenderRounded_52
-    3300012: detail_fenderSquare_31
-    3300014: detail_fenderSquare_32
-    3300016: detail_fenderSquare_33
-    3300018: detail_fenderSquare_34
-    3300020: engine_intakeArrow_48
-    3300022: hood_truck_24
-    3300024: trunk_station_22
-    3300026: wall_paperFrame_46
-    3300028: wall_paperFrame_47
-    3300030: windshield_square_23
-    4300000: detail_bullbar_37
-    4300002: detail_engine_49
-    4300004: detail_exhaustVertical_35
-    4300006: detail_exhaustVertical_36
-    4300008: detail_fenderRounded_51
-    4300010: detail_fenderRounded_52
-    4300012: detail_fenderSquare_31
-    4300014: detail_fenderSquare_32
-    4300016: detail_fenderSquare_33
-    4300018: detail_fenderSquare_34
-    4300020: engine_intakeArrow_48
-    4300022: hood_truck_24
-    4300024: trunk_station_22
-    4300026: wall_paperFrame_46
-    4300028: wall_paperFrame_47
-    4300030: windshield_square_23
-    11400000: //RootNode
-    11400002: //RootNode
-    11400004: detail_bullbar_37
-    11400006: detail_engine_49
-    11400008: detail_exhaustVertical_35
-    11400010: detail_exhaustVertical_36
-    11400012: detail_fenderRounded_51
-    11400014: detail_fenderRounded_52
-    11400016: detail_fenderSquare_31
-    11400018: detail_fenderSquare_32
-    11400020: detail_fenderSquare_33
-    11400022: detail_fenderSquare_34
-    11400024: engine_intakeArrow_48
-    11400026: hood_truck_24
-    11400028: trunk_station_22
-    11400030: wall_paperFrame_46
-    11400032: wall_paperFrame_47
-    11400034: windshield_square_23
-    2186277476908879412: ImportLogs
-  externalObjects: {}
+  serializedVersion: 21300
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: detail_bullbar_37
+  - first:
+      1: 100004
+    second: detail_engine_49
+  - first:
+      1: 100006
+    second: detail_exhaustVertical_35
+  - first:
+      1: 100008
+    second: detail_exhaustVertical_36
+  - first:
+      1: 100010
+    second: detail_fenderRounded_51
+  - first:
+      1: 100012
+    second: detail_fenderRounded_52
+  - first:
+      1: 100014
+    second: detail_fenderSquare_31
+  - first:
+      1: 100016
+    second: detail_fenderSquare_32
+  - first:
+      1: 100018
+    second: detail_fenderSquare_33
+  - first:
+      1: 100020
+    second: detail_fenderSquare_34
+  - first:
+      1: 100022
+    second: engine_intakeArrow_48
+  - first:
+      1: 100024
+    second: hood_truck_24
+  - first:
+      1: 100026
+    second: trunk_station_22
+  - first:
+      1: 100028
+    second: wall_paperFrame_46
+  - first:
+      1: 100030
+    second: wall_paperFrame_47
+  - first:
+      1: 100032
+    second: windshield_square_23
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: detail_bullbar_37
+  - first:
+      4: 400004
+    second: detail_engine_49
+  - first:
+      4: 400006
+    second: detail_exhaustVertical_35
+  - first:
+      4: 400008
+    second: detail_exhaustVertical_36
+  - first:
+      4: 400010
+    second: detail_fenderRounded_51
+  - first:
+      4: 400012
+    second: detail_fenderRounded_52
+  - first:
+      4: 400014
+    second: detail_fenderSquare_31
+  - first:
+      4: 400016
+    second: detail_fenderSquare_32
+  - first:
+      4: 400018
+    second: detail_fenderSquare_33
+  - first:
+      4: 400020
+    second: detail_fenderSquare_34
+  - first:
+      4: 400022
+    second: engine_intakeArrow_48
+  - first:
+      4: 400024
+    second: hood_truck_24
+  - first:
+      4: 400026
+    second: trunk_station_22
+  - first:
+      4: 400028
+    second: wall_paperFrame_46
+  - first:
+      4: 400030
+    second: wall_paperFrame_47
+  - first:
+      4: 400032
+    second: windshield_square_23
+  - first:
+      21: 2100000
+    second: tire
+  - first:
+      21: 2100002
+    second: _defaultMat
+  - first:
+      21: 2100004
+    second: lightRed
+  - first:
+      21: 2100006
+    second: blueSteel
+  - first:
+      21: 2100008
+    second: black
+  - first:
+      21: 2100010
+    second: light
+  - first:
+      21: 2100012
+    second: orangeSteel
+  - first:
+      21: 2100014
+    second: glass
+  - first:
+      21: 2100016
+    second: wood
+  - first:
+      23: 2300000
+    second: detail_bullbar_37
+  - first:
+      23: 2300002
+    second: detail_engine_49
+  - first:
+      23: 2300004
+    second: detail_exhaustVertical_35
+  - first:
+      23: 2300006
+    second: detail_exhaustVertical_36
+  - first:
+      23: 2300008
+    second: detail_fenderRounded_51
+  - first:
+      23: 2300010
+    second: detail_fenderRounded_52
+  - first:
+      23: 2300012
+    second: detail_fenderSquare_31
+  - first:
+      23: 2300014
+    second: detail_fenderSquare_32
+  - first:
+      23: 2300016
+    second: detail_fenderSquare_33
+  - first:
+      23: 2300018
+    second: detail_fenderSquare_34
+  - first:
+      23: 2300020
+    second: engine_intakeArrow_48
+  - first:
+      23: 2300022
+    second: hood_truck_24
+  - first:
+      23: 2300024
+    second: trunk_station_22
+  - first:
+      23: 2300026
+    second: wall_paperFrame_46
+  - first:
+      23: 2300028
+    second: wall_paperFrame_47
+  - first:
+      23: 2300030
+    second: windshield_square_23
+  - first:
+      33: 3300000
+    second: detail_bullbar_37
+  - first:
+      33: 3300002
+    second: detail_engine_49
+  - first:
+      33: 3300004
+    second: detail_exhaustVertical_35
+  - first:
+      33: 3300006
+    second: detail_exhaustVertical_36
+  - first:
+      33: 3300008
+    second: detail_fenderRounded_51
+  - first:
+      33: 3300010
+    second: detail_fenderRounded_52
+  - first:
+      33: 3300012
+    second: detail_fenderSquare_31
+  - first:
+      33: 3300014
+    second: detail_fenderSquare_32
+  - first:
+      33: 3300016
+    second: detail_fenderSquare_33
+  - first:
+      33: 3300018
+    second: detail_fenderSquare_34
+  - first:
+      33: 3300020
+    second: engine_intakeArrow_48
+  - first:
+      33: 3300022
+    second: hood_truck_24
+  - first:
+      33: 3300024
+    second: trunk_station_22
+  - first:
+      33: 3300026
+    second: wall_paperFrame_46
+  - first:
+      33: 3300028
+    second: wall_paperFrame_47
+  - first:
+      33: 3300030
+    second: windshield_square_23
+  - first:
+      43: 4300000
+    second: detail_bullbar_37
+  - first:
+      43: 4300002
+    second: detail_engine_49
+  - first:
+      43: 4300004
+    second: detail_exhaustVertical_35
+  - first:
+      43: 4300006
+    second: detail_exhaustVertical_36
+  - first:
+      43: 4300008
+    second: detail_fenderRounded_51
+  - first:
+      43: 4300010
+    second: detail_fenderRounded_52
+  - first:
+      43: 4300012
+    second: detail_fenderSquare_31
+  - first:
+      43: 4300014
+    second: detail_fenderSquare_32
+  - first:
+      43: 4300016
+    second: detail_fenderSquare_33
+  - first:
+      43: 4300018
+    second: detail_fenderSquare_34
+  - first:
+      43: 4300020
+    second: engine_intakeArrow_48
+  - first:
+      43: 4300022
+    second: hood_truck_24
+  - first:
+      43: 4300024
+    second: trunk_station_22
+  - first:
+      43: 4300026
+    second: wall_paperFrame_46
+  - first:
+      43: 4300028
+    second: wall_paperFrame_47
+  - first:
+      43: 4300030
+    second: windshield_square_23
+  - first:
+      114: 11400000
+    second: //RootNode
+  - first:
+      114: 11400002
+    second: //RootNode
+  - first:
+      114: 11400004
+    second: detail_bullbar_37
+  - first:
+      114: 11400006
+    second: detail_engine_49
+  - first:
+      114: 11400008
+    second: detail_exhaustVertical_35
+  - first:
+      114: 11400010
+    second: detail_exhaustVertical_36
+  - first:
+      114: 11400012
+    second: detail_fenderRounded_51
+  - first:
+      114: 11400014
+    second: detail_fenderRounded_52
+  - first:
+      114: 11400016
+    second: detail_fenderSquare_31
+  - first:
+      114: 11400018
+    second: detail_fenderSquare_32
+  - first:
+      114: 11400020
+    second: detail_fenderSquare_33
+  - first:
+      114: 11400022
+    second: detail_fenderSquare_34
+  - first:
+      114: 11400024
+    second: engine_intakeArrow_48
+  - first:
+      114: 11400026
+    second: hood_truck_24
+  - first:
+      114: 11400028
+    second: trunk_station_22
+  - first:
+      114: 11400030
+    second: wall_paperFrame_46
+  - first:
+      114: 11400032
+    second: wall_paperFrame_47
+  - first:
+      114: 11400034
+    second: windshield_square_23
+  - first:
+      41386430: 2186277476908879412
+    second: ImportLogs
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: defaultMat
+    second: {fileID: 2100000, guid: 508037c6f4351e7419993d043ed3324f, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -124,6 +349,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -147,21 +373,33 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
@@ -169,10 +407,13 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -182,14 +423,18 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 0
   humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
