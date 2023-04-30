@@ -742,10 +742,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3346204062532244976, guid: 27e7a6927fb692241884e6cc2d2a76be, type: 3}
-      propertyPath: maxAmountOfNitro
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 3377968329991709777, guid: 27e7a6927fb692241884e6cc2d2a76be, type: 3}
       propertyPath: m_RootOrder
       value: 3

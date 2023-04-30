@@ -43,7 +43,7 @@ public class CarBase : MonoBehaviour
     public Axle FrontAxle => axles.Find(axle => axle.axlePosition == AxlePosition.Front);
 
     public float Speed => rb.velocity.magnitude;
-    public float AmoutOfNitro;// { get; protected set; }
+    public float AmoutOfNitro { get; protected set; }
 
     public bool IsNitroUsed { get; protected set; }
     public bool IsRotating { get; protected set; }
