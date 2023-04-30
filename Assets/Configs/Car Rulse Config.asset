@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _timeToStartStabilizeRotation: 2
   _stabilizeRotationSpeed: 250
-  _blockRotationDistance: 0.09
+  _blockRotationDistance: 0.18

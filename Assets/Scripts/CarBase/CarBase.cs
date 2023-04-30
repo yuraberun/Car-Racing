@@ -43,7 +43,7 @@ public class CarBase : MonoBehaviour
     public Axle FrontAxle => axles.Find(axle => axle.axlePosition == AxlePosition.Front);
 
     public float Speed => rb.velocity.magnitude;
-    public float AmoutOfNitro { get; protected set; }
+    public float AmoutOfNitro;// { get; protected set; }
 
     public bool IsNitroUsed { get; protected set; }
     public bool IsRotating { get; protected set; }
@@ -147,6 +147,9 @@ public class CarBase : MonoBehaviour
 
     private IEnumerator Rotate(RotateDirection rotateDirection)
     {
+        var degreesToFlip = CurrRotateDirection == RotateDirection.Forward ? carRulesConfig.DegreesToForwardFlip : carRulesConfig.DegreesToBackFlip;
+        var currDegree = 0f;
+        var flipsCount = 0;
         var speed = rotateSpeed * ((rotateDirection == RotateDirection.Back) ? -1 : 1);
 
         while (true)
@@ -155,8 +158,19 @@ public class CarBase : MonoBehaviour
             {   
                 IsRotating = true;
 
+                var rotateValue = speed * Time.deltaTime;
+                currDegree += rotateValue;
+
                 rb.angularVelocity = Vector3.zero;
-                transform.rotation = transform.rotation * Quaternion.AngleAxis(speed * Time.deltaTime, Vector3.right);
+                transform.rotation = transform.rotation * Quaternion.AngleAxis(rotateValue, Vector3.right);
+
+                if (Mathf.Abs(currDegree) >= degreesToFlip)
+                {
+                    currDegree = 0f;
+                    flipsCount++;
+
+                    OnFlip(rotateDirection, flipsCount);
+                }
             }
 
             else
@@ -182,6 +196,14 @@ public class CarBase : MonoBehaviour
             return false;
 
         return true;
+    }
+
+    private void OnFlip(RotateDirection rotateDirection, int flipInARow = 1)
+    {
+        var nitroReward = rotateDirection == RotateDirection.Forward ? carRulesConfig.ForwardFlipNitroReward
+            : rotateDirection == RotateDirection.Back ? carRulesConfig.BackFlipNitroReward : 0f;
+
+        AddNitro(nitroReward);
     }
 
     private IEnumerator ControllAngularVelocity()
@@ -251,6 +273,16 @@ public class CarBase : MonoBehaviour
 
         _autoMoveCoroutine = StartCoroutine(AutoMove());
         _controlAngularVelocityCoroutine = StartCoroutine(ControllAngularVelocity());
+
+        AddNitro(carRulesConfig.NitroBonusAfterStabilize);
+    }
+
+    public void AddNitro(float percent)
+    {
+        var value = maxAmountOfNitro * percent;
+        var nitro = AmoutOfNitro + value;
+
+        AmoutOfNitro = Mathf.Clamp(nitro, 0f, maxAmountOfNitro);
     }
 }
 
