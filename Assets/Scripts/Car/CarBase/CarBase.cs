@@ -130,7 +130,7 @@ public class CarBase : MonoBehaviour
         {
             if (CanRotate)
             {
-                transform.Rotate(new Vector3(speed * Time.deltaTime, 0f, 0f), Space.Self);
+                rb.rotation = rb.rotation * Quaternion.AngleAxis(speed * Time.deltaTime, Vector3.right);
             }
 
             yield return null;

@@ -1,11 +1,16 @@
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(WheelCollider))]
 public class Wheel : MonoBehaviour
 {
     private static float _detectRoadOffset = 0.2f;
 
+    [SerializeField] private GameObject _visualWheel;
+
     private BoxCollider _roadDetectCollider;
+
+    private Coroutine _updateVisualCoroutine;
 
     public WheelCollider WheelCollider { get; private set; }
 
@@ -18,8 +23,23 @@ public class Wheel : MonoBehaviour
         var size = WheelCollider.radius * 2f + _detectRoadOffset;
 
         _roadDetectCollider = gameObject.AddComponent<BoxCollider>();
-        _roadDetectCollider.size = new Vector3(size, size, 0.1f);
+        _roadDetectCollider.size = new Vector3(0.1f, size, size);
         _roadDetectCollider.isTrigger = true;
+
+        _updateVisualCoroutine = StartCoroutine(UpdateVisual());
+    }
+
+    private IEnumerator UpdateVisual()
+    {
+        while (true)
+        {
+            WheelCollider.GetWorldPose(out var position, out var rotation);
+     
+            _visualWheel.transform.position = position;
+            _visualWheel.transform.rotation = rotation;
+
+            yield return null;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
