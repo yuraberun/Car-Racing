@@ -30,14 +30,14 @@ public class LevelController : MonoBehaviour
     public void StartLevel()
     {
         _player.UnblockInput();
-        _playerCar.StartAutoMove();
-        _enemyCar?.StartAutoMove();
+        _playerCar.Activate();
+        _enemyCar?.Activate();
 
         _levelCamera.Activate();
     }
 
     public void EndLevel()
     {
-
+        
     }
 }

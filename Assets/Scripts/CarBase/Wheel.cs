@@ -4,8 +4,6 @@ using System.Collections;
 [RequireComponent(typeof(WheelCollider))]
 public class Wheel : MonoBehaviour
 {
-    private static float _detectRoadOffset = 0.2f;
-
     [SerializeField] private GameObject _visualWheel;
 
     private BoxCollider _roadDetectCollider;
@@ -16,11 +14,11 @@ public class Wheel : MonoBehaviour
 
     public bool OnRoad { get; private set; }
 
-    public void Init()
+    public void Init(float blockRotationDistance)
     {
         WheelCollider = GetComponent<WheelCollider>();
 
-        var size = WheelCollider.radius * 2f + _detectRoadOffset;
+        var size = WheelCollider.radius * 2f + blockRotationDistance * 2f;
 
         _roadDetectCollider = gameObject.AddComponent<BoxCollider>();
         _roadDetectCollider.size = new Vector3(0.1f, size, size);
