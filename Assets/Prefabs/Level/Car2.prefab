@@ -114,7 +114,6 @@ MonoBehaviour:
   maxAmountOfNitro: 2
   rotateSpeed: 240
   angularVelocity: 1.6
-  AmoutOfNitro: 0
 --- !u!54 &3377968329991709776
 Rigidbody:
   m_ObjectHideFlags: 0

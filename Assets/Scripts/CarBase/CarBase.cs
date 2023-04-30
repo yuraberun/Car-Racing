@@ -175,6 +175,9 @@ public class CarBase : MonoBehaviour
 
             else
             {
+                currDegree = 0f;
+                flipsCount = 0;
+
                 IsRotating = false;
             }
 
