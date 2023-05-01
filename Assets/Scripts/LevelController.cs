@@ -51,6 +51,8 @@ public class LevelController : SingletonComponent<LevelController>
     {
         _player.BlockInput();
 
+        _levelCamera.Deactivate();
+
         playerCar.Deactivate();
         enemyCar?.Deactivate();
     }

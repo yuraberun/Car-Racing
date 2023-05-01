@@ -5,6 +5,7 @@ public class LevelCamera : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Camera _camera;
+    [SerializeField] private float _stopMoveZPosiiton;
 
     private Coroutine _followCoroutine;
 
@@ -30,7 +31,10 @@ public class LevelCamera : MonoBehaviour
         while (true)
         {
             var cameraPos = transform.position;
-            cameraPos.z = _target.position.z;
+
+            if (cameraPos.z < _stopMoveZPosiiton)
+                cameraPos.z = _target.position.z;
+                
             cameraPos.y = _target.position.y;
             transform.position = cameraPos;
 

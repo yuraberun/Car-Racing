@@ -147,15 +147,12 @@ public class CarBase : MonoBehaviour
     {
         while (Speed > 0f)
         {
-            var force = -MoveDirection * brakePower * Time.deltaTime;
+            var force = -MoveDirection * autoSpeed * Time.deltaTime;
 
             rb.AddForce(force, ForceMode.Acceleration);
 
             yield return null;
         }
-
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
     }
 
     public void StartRotate(RotateDirection rotateDirection)
