@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Car Rulse Config
   m_EditorClassIdentifier: 
   _timeToStartStabilizeRotation: 2
-  _stabilizeRotationSpeed: 225
+  _stabilizeRotationSpeed: 250
   _blockRotationDistance: 0.18
   _nitroBonusAfterStabilize: 0.35
-  _degreesToForwardFlip: 320
-  _forwardFlipNitroReward: 0.5
-  _degreesToBackFlip: 320
-  _backFlipNitroReward: 0.75
+  _degreesToForwardFlip: 340
+  _forwardFlipNitroReward: 0.75
+  _degreesToBackFlip: 340
+  _backFlipNitroReward: 0.5
