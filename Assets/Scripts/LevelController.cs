@@ -4,23 +4,33 @@ using UnityEngine.SceneManagement;
 
 public class LevelController : SingletonComponent<LevelController>
 {
+    [Header("Configs")]
+    [SerializeField] private CarsCollection _carsCollection;
+
     [Header("Components")]
     [SerializeField] private LevelCamera _levelCamera;
 
-    public CarBase playerCar;
-    public CarBase enemyCar;
+    [SerializeField] private Transform _playerCarSpawnTransform;
+    [SerializeField] private Transform _enemyCarSpawnTransform;
 
     [Header("Settings")]
     [SerializeField] private float _showResultsWindowDelay;
 
     private List<FinishedCarInfo> _finishedCarInfos = new List<FinishedCarInfo>();
 
-    private Player _player;
+    public CarBase PlayerCar { get; private set; }
+
+    public CarBase EnemyCar { get; private set; }
+
+    public Player Player { get; private set; }
+
+    private void Awake()
+    {
+        Init();
+    }
 
     private void Start()
     {
-        Init();
-
         LevelHUD.Instance.PlayCountdownAnimation(StartLevel);
     }
 
@@ -28,42 +38,44 @@ public class LevelController : SingletonComponent<LevelController>
     {
         Time.timeScale = 1f;
 
-        playerCar.Init();
-        _player = gameObject.AddComponent<Player>();
-        _player.Init(playerCar);
+        var playerCarPrefab = _carsCollection.GetRandomCarPrefab();
+        PlayerCar = Instantiate(playerCarPrefab, _playerCarSpawnTransform.position, Quaternion.identity).GetComponent<CarBase>();
+        PlayerCar.Init(true);
+        Player = gameObject.AddComponent<Player>();
+        Player.Init(PlayerCar);
 
-        enemyCar?.Init();
+        var enemyCarPrefab = _carsCollection.GetRandomCarPrefab();
+        EnemyCar = Instantiate(enemyCarPrefab, _enemyCarSpawnTransform.position, Quaternion.identity).GetComponent<CarBase>();
+        EnemyCar.Init(false);
 
         _finishedCarInfos.Clear();
         LevelHUD.Instance.Init();
-        _levelCamera.Init(playerCar.transform);
+        _levelCamera.Init(PlayerCar.transform);
         _levelCamera.Activate();
     }
 
     public void StartLevel()
     {
-        _player.UnblockInput();
-        playerCar.Activate();
-        enemyCar?.Activate();
+        Player.UnblockInput();
+
+        PlayerCar.Activate();
+        EnemyCar.Activate();
     }
 
     public void EndLevel()
     {
-        _player.BlockInput();
+        Player.BlockInput();
 
         _levelCamera.Deactivate();
-
-        playerCar.Deactivate();
-        enemyCar?.Deactivate();
     }
 
-    public void OnAnyCarFinish(bool isPlayer, int completeTime)
+    public void OnAnyCarFinish(CarName carName, int completeTime, bool isPlayer)
     {
         var position = _finishedCarInfos.Count + 1;
 
-        _finishedCarInfos.Add(new FinishedCarInfo(position, completeTime, isPlayer));
+        _finishedCarInfos.Add(new FinishedCarInfo(carName, position, completeTime, isPlayer));
 
-        if (_finishedCarInfos.Count == 1)
+        if (isPlayer || _finishedCarInfos.Count == 2)
         {   
             EndLevel();
             Invoke(nameof(OpenResultsWindow), _showResultsWindowDelay);

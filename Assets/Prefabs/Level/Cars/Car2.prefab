@@ -95,6 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51d2e1b99a815bf479d7a0cb487b6819, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _carName: 2
   carRulesConfig: {fileID: 11400000, guid: 022a18dbc01aaab4bb73b929407b7dc5, type: 2}
   rb: {fileID: 3377968329991709776}
   centerOfMass: {fileID: 3377968330633375464}
@@ -109,9 +110,9 @@ MonoBehaviour:
   brakePower: 110
   nitroPower: 475
   startMoveSpeed: 2.5
-  maxAutoMoveSpeed: 13
+  maxAutoMoveSpeed: 13.5
   maxSpeedWithNitro: 25
-  maxAmountOfNitro: 1.85
+  maxAmountOfNitro: 2.1
   rotateSpeed: 220
   angularVelocity: 1.3
 --- !u!54 &3377968329991709776

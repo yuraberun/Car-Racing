@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
     {
         _inputs = new PlayerInputs();
         _car = carBase;
-        _car.IsPlayerCar = true;
 
         SubscribeToInput();
         UnblockInput();

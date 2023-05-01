@@ -32,7 +32,7 @@ public class LevelHUD : SingletonComponent<LevelHUD>
 
     public void Init()
     {
-        LevelController.Instance.playerCar.SubscribeToAmountOfNitroChange(OnAmountOfPlayerNitroChange);
+        LevelController.Instance.PlayerCar.SubscribeToAmountOfNitroChange(OnAmountOfPlayerNitroChange);
     }
 
     public void PlayCountdownAnimation(Action callBack)

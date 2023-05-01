@@ -5,6 +5,8 @@ using System;
 
 public class CarBase : MonoBehaviour
 {
+    [SerializeField] private CarName _carName;
+
     [Header("Configs")]
     [SerializeField] protected CarRulesConfig carRulesConfig;
 
@@ -45,6 +47,8 @@ public class CarBase : MonoBehaviour
 
     public RotateDirection CurrRotateDirection { get; protected set; }
 
+    public CarName CarName => _carName;
+
     public Axle FrontAxle => axles.Find(axle => axle.axlePosition == AxlePosition.Front);
 
     public float Speed => rb.velocity.magnitude;
@@ -59,7 +63,7 @@ public class CarBase : MonoBehaviour
     public bool AllWheelsOnRoad => axles.FindAll(axle => !axle.TwoWheelsOnRoad).Count == 0;
     public bool AnyWheelsOnRoad => axles.FindAll(axle => !axle.AnyWheelOnRoad).Count == 0;
 
-    public virtual void Init()
+    public virtual void Init(bool isPlayerCar)
     {
         rb.centerOfMass = centerOfMass.transform.localPosition;
 
@@ -68,6 +72,7 @@ public class CarBase : MonoBehaviour
         
         AmoutOfNitro = maxAmountOfNitro;
         BlockAllAction = true;
+        IsPlayerCar = isPlayerCar;
 
         carRotationStabilizer = gameObject.AddComponent<CarRotationStabilizer>();
         carRotationStabilizer.Init(this, carRulesConfig.TimeToStartStabilizeRotation, carRulesConfig.StabilizeRotationSpeed);
@@ -364,7 +369,8 @@ public class CarBase : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Finish"))
         {
-            LevelController.Instance.OnAnyCarFinish(IsPlayerCar, timer.Time);
+            LevelController.Instance.OnAnyCarFinish(CarName, timer.Time, IsPlayerCar);
+            Deactivate();
         }
     }
 
