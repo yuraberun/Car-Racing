@@ -24,6 +24,8 @@ public class LevelController : SingletonComponent<LevelController>
 
     public Player Player { get; private set; }
 
+    public EnemyAI EnemyAI { get; private set; }
+
     private void Awake()
     {
         Init();
@@ -48,6 +50,8 @@ public class LevelController : SingletonComponent<LevelController>
         var enemyCarPrefab = _carsCollection.GetRandomCarPrefab();
         EnemyCar = Instantiate(enemyCarPrefab, _enemyCarSpawnTransform.position, Quaternion.identity).GetComponent<CarBase>();
         EnemyCar.Init(false);
+        EnemyAI = gameObject.AddComponent<EnemyAI>();
+        EnemyAI.Init(EnemyCar, PlayerCar.transform);
 
         _finishedCarInfos.Clear();
         LevelHUD.Instance.Init();
@@ -58,6 +62,7 @@ public class LevelController : SingletonComponent<LevelController>
     public void StartLevel()
     {
         Player.UnblockInput();
+        EnemyAI.Activate();
 
         PlayerCar.Activate();
         EnemyCar.Activate();
@@ -66,6 +71,7 @@ public class LevelController : SingletonComponent<LevelController>
     public void EndLevel()
     {
         Player.BlockInput();
+        EnemyAI.Deactivate();
 
         _levelCamera.Deactivate();
     }

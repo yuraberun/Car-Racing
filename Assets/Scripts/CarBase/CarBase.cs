@@ -63,6 +63,9 @@ public class CarBase : MonoBehaviour
 
     public float AmoutOfNitro { get; protected set; }
 
+    public float CurrDegree { get; protected set; }
+    public float TimeOnAir;// { get; protected set; }
+
     public bool IsNitroUsed { get; protected set; }
     public bool IsRotating { get; protected set; }
     public bool IsStabilizate { get; protected set; }
@@ -197,7 +200,8 @@ public class CarBase : MonoBehaviour
     private IEnumerator Rotate(RotateDirection rotateDirection)
     {
         var degreesToFlip = CurrRotateDirection == RotateDirection.Forward ? carRulesConfig.DegreesToForwardFlip : carRulesConfig.DegreesToBackFlip;
-        var currDegree = 0f;
+        CurrDegree = 0f;
+        TimeOnAir = 0f;
         var flipsCount = 0;
         var speed = rotateSpeed * ((rotateDirection == RotateDirection.Back) ? -1 : 1);
 
@@ -208,14 +212,16 @@ public class CarBase : MonoBehaviour
                 IsRotating = true;
 
                 var rotateValue = speed * Time.deltaTime;
-                currDegree += rotateValue;
+                CurrDegree += rotateValue;
 
                 rb.angularVelocity = Vector3.zero;
                 transform.rotation = transform.rotation * Quaternion.AngleAxis(rotateValue, Vector3.right);
+                
+                TimeOnAir += Time.deltaTime;
 
-                if (Mathf.Abs(currDegree) >= degreesToFlip)
+                if (Mathf.Abs(CurrDegree) >= degreesToFlip)
                 {
-                    currDegree = 0f;
+                    CurrDegree = 0f;
                     flipsCount++;
 
                     OnFlip(rotateDirection, flipsCount);
@@ -224,7 +230,8 @@ public class CarBase : MonoBehaviour
 
             else
             {
-                currDegree = 0f;
+                TimeOnAir = 0f;
+                CurrDegree = 0f;
                 flipsCount = 0;
 
                 IsRotating = false;
@@ -234,7 +241,7 @@ public class CarBase : MonoBehaviour
         }
     }
 
-    private bool CanRotate()
+    public bool CanRotate()
     {
         var axlePosition = CurrRotateDirection == RotateDirection.Forward ? AxlePosition.Back
             : CurrRotateDirection == RotateDirection.Back ? AxlePosition.Front : AxlePosition.None;
@@ -251,6 +258,19 @@ public class CarBase : MonoBehaviour
             return false;
 
         return true;
+    }
+
+    public bool IsAxleOnRoad(RotateDirection rotateDirection)
+    {
+        var axlePosition = rotateDirection == RotateDirection.Forward ? AxlePosition.Back
+            : rotateDirection == RotateDirection.Back ? AxlePosition.Front : AxlePosition.None;
+
+        if (axlePosition == AxlePosition.None)
+            return false;
+
+        var axle = axles.Find(axle => axle.axlePosition == axlePosition);
+
+        return !axle.AnyWheelOnRoad;
     }
 
     private void OnFlip(RotateDirection rotateDirection, int flipInARow = 1)
