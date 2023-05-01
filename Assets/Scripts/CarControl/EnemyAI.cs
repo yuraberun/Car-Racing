@@ -31,7 +31,7 @@ public class EnemyAI : MonoBehaviour
     public void Activate()
     {
         _nitroControlCoroutine = StartCoroutine(NitroControl());
-        _rotateControlCoroutine = StartCoroutine(RotateControl());
+        //_rotateControlCoroutine = StartCoroutine(RotateControl());
     }
 
     public void Deactivate()
@@ -131,7 +131,7 @@ public class EnemyAI : MonoBehaviour
     private IEnumerator StopRotate()
     {
         yield return new WaitForSeconds(0.1f);
-        
+
         while (_carBase.IsRotating && _carBase.CurrDegree < _stopRotationDegree)
         {
             yield return null;

@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 743505738172312492}
   - component: {fileID: 743505738172312490}
   - component: {fileID: 743505738172312493}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -528,7 +528,7 @@ MeshCollider:
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 0
-  m_CookingOptions: 30
+  m_CookingOptions: 0
   m_Mesh: {fileID: 0}
 --- !u!1 &743505739513071908
 GameObject:
@@ -541,7 +541,7 @@ GameObject:
   - component: {fileID: 743505739513071907}
   - component: {fileID: 743505739513071906}
   - component: {fileID: 743505739513071909}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -996,7 +996,7 @@ MeshCollider:
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 0
-  m_CookingOptions: 30
+  m_CookingOptions: 0
   m_Mesh: {fileID: 0}
 --- !u!1 &743505739847028984
 GameObject:

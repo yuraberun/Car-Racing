@@ -17,7 +17,9 @@ public class LevelHUD : SingletonComponent<LevelHUD>
     [SerializeField] private Slider _nitroSlider;
 
     [Header("Nitro Bonus Label")]
-    [SerializeField] private TextMeshProUGUI _nitroBonusLabel;
+    [SerializeField] private GameObject _nitroBonus;
+    [SerializeField] private TextMeshProUGUI _nitroBonusNameLabel;
+    [SerializeField] private TextMeshProUGUI _nitroBonusValueLabel;
 
     [SerializeField] private string _forwardFlipText;
     [SerializeField] private string _backFlipText;
@@ -55,23 +57,26 @@ public class LevelHUD : SingletonComponent<LevelHUD>
 
     public void OnPlayerCarFlip(RotateDirection flipType, float nitroPercentBonus, int flipsInARows)
     {
-        var text = flipType == RotateDirection.Forward ? _forwardFlipText
+        var bonusName = flipType == RotateDirection.Forward ? _forwardFlipText
             : flipType == RotateDirection.Back ? _backFlipText
             : flipType == RotateDirection.Stabilization ? _stabilizationFlipText : "";
 
-        if (text != "")
+        if (bonusName != "")
         {
-            text = string.Format(text, (nitroPercentBonus * 100) + "%");
+            _nitroBonusNameLabel.text = bonusName;
+
+            var valueText = string.Format("+{0}% NITRO", (nitroPercentBonus * 100));
 
             if (flipsInARows > 1)
-                text += " X" + flipsInARows;
+                valueText += " X" + flipsInARows;
 
-            _nitroBonusLabel.text = text;
-            _nitroBonusLabel.gameObject.SetActive(true);
+            _nitroBonusValueLabel.text = valueText;
+            _nitroBonus.SetActive(true);
             
-            var color = _nitroBonusLabel.color;
+            var color = _nitroBonusNameLabel.color;
             color.a = 1f;
-            _nitroBonusLabel.color = color;
+            _nitroBonusNameLabel.color = color;
+            _nitroBonusValueLabel.color = color;
 
             if (_fadeCoroutine != null)
                 StopCoroutine(_fadeCoroutine);
@@ -85,21 +90,22 @@ public class LevelHUD : SingletonComponent<LevelHUD>
         yield return new WaitForSeconds(_showTime);
 
         var elapsedTime = 0f;
-        var startAlpha = _nitroBonusLabel.color.a;
-        var color = _nitroBonusLabel.color;
+        var startAlpha = _nitroBonusNameLabel.color.a;
+        var color = _nitroBonusNameLabel.color;
 
         while (elapsedTime <= _fadeTime)
         {
             color.a = Mathf.Lerp(startAlpha, 0, elapsedTime / _fadeTime);
 
-            _nitroBonusLabel.color = color;
+            _nitroBonusNameLabel.color = color;
+            _nitroBonusValueLabel.color = color;
 
             elapsedTime += Time.deltaTime;
 
             yield return null;
         }
 
-        _nitroBonusLabel.gameObject.SetActive(false);
+        _nitroBonus.gameObject.SetActive(false);
     }
     
     private void OnButtonClick()
