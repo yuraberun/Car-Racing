@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class Window : MonoBehaviour
 {
-    protected virtual void Open()
+    protected void OpenBase()
     {
         gameObject.SetActive(true);
     }
 
-    protected virtual void Close()
+    protected void CloseBase()
     {
         gameObject.SetActive(false);
     }
 
-    protected virtual void OnButtonClick()
+    protected void OnButtonClick()
     {
         
     }

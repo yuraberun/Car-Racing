@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System;
 
 public class CarBase : MonoBehaviour
 {
@@ -31,6 +32,10 @@ public class CarBase : MonoBehaviour
 
     protected CarRotationStabilizer carRotationStabilizer;
 
+    protected Timer timer;
+
+    protected Action<float, float> onAmountOfNitroChange;
+
     private Coroutine _autoMoveCoroutine;
     private Coroutine _rotateCoroutine;
     private Coroutine _accelerationCoroutine;
@@ -47,7 +52,9 @@ public class CarBase : MonoBehaviour
 
     public bool IsNitroUsed { get; protected set; }
     public bool IsRotating { get; protected set; }
-    public bool IsAllActionsBlock { get; protected set; }
+    public bool IsStabilizate { get; protected set; }
+    public bool IsPlayerCar { get; set; }
+    public bool BlockAllAction { get; protected set; }
 
     public bool AllWheelsOnRoad => axles.FindAll(axle => !axle.TwoWheelsOnRoad).Count == 0;
     public bool AnyWheelsOnRoad => axles.FindAll(axle => !axle.AnyWheelOnRoad).Count == 0;
@@ -60,13 +67,19 @@ public class CarBase : MonoBehaviour
             axle.Init(carRulesConfig.BlockRotationDistance);
         
         AmoutOfNitro = maxAmountOfNitro;
+        BlockAllAction = true;
 
         carRotationStabilizer = gameObject.AddComponent<CarRotationStabilizer>();
         carRotationStabilizer.Init(this, carRulesConfig.TimeToStartStabilizeRotation, carRulesConfig.StabilizeRotationSpeed);
+
+        timer = gameObject.AddComponent<Timer>();
+        timer.Init();
     }
 
     public void Activate()
     {
+        BlockAllAction = false;
+
         StartAutoMove();
 
         _controlAngularVelocityCoroutine = StartCoroutine(ControllAngularVelocity());
@@ -77,12 +90,17 @@ public class CarBase : MonoBehaviour
     public void Deactivate()
     {
         carRotationStabilizer.Deactivate();
+        timer.Stop();
 
         StopAllCoroutines();
+        StartCoroutine(AutoStop());
     }
 
     public void StartAutoMove()
     {
+        if (BlockAllAction)
+            return;
+
         if (_autoMoveCoroutine != null)
             StopCoroutine(_autoMoveCoroutine);
 
@@ -104,22 +122,40 @@ public class CarBase : MonoBehaviour
 
         while (true)
         {
-            if (AllWheelsOnRoad && Speed < maxAutoMoveSpeed)
+            if (!BlockAllAction)
             {
-                var force = MoveDirection * autoSpeed * Time.deltaTime;
+                if (AllWheelsOnRoad && Speed < maxAutoMoveSpeed)
+                {
+                    var force = MoveDirection * autoSpeed * Time.deltaTime;
 
-                rb.AddForce(force, ForceMode.Acceleration);
-            }
+                    rb.AddForce(force, ForceMode.Acceleration);
+                }
 
-            if (Speed > maxAutoMoveSpeed)
-            {
-                var force = -MoveDirection * brakePower * Time.deltaTime;
+                if (Speed > maxAutoMoveSpeed)
+                {
+                    var force = -MoveDirection * brakePower * Time.deltaTime;
 
-                rb.AddForce(force, ForceMode.Acceleration);
+                    rb.AddForce(force, ForceMode.Acceleration);
+                }
             }
 
             yield return null;
         }
+    }
+
+    private IEnumerator AutoStop()
+    {
+        while (Speed > 0f)
+        {
+            var force = -MoveDirection * brakePower * Time.deltaTime;
+
+            rb.AddForce(force, ForceMode.Acceleration);
+
+            yield return null;
+        }
+
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
     }
 
     public void StartRotate(RotateDirection rotateDirection)
@@ -132,7 +168,7 @@ public class CarBase : MonoBehaviour
         _rotateCoroutine = StartCoroutine(Rotate(rotateDirection));
     }
 
-    public void EndRotate()
+    public void StopRotate()
     {
         if (_rotateCoroutine != null)
             StopCoroutine(_rotateCoroutine);
@@ -190,12 +226,15 @@ public class CarBase : MonoBehaviour
         var axlePosition = CurrRotateDirection == RotateDirection.Forward ? AxlePosition.Back
             : CurrRotateDirection == RotateDirection.Back ? AxlePosition.Front : AxlePosition.None;
 
+        if (BlockAllAction)
+            return false;
+
         if (axlePosition == AxlePosition.None) 
             return false;
 
         var axle = axles.Find(axle => axle.axlePosition == axlePosition);
 
-        if (axle.leftWheel.OnRoad || axle.rightWheel.OnRoad)
+        if (axle.AnyWheelOnRoad)
             return false;
 
         return true;
@@ -207,13 +246,18 @@ public class CarBase : MonoBehaviour
             : rotateDirection == RotateDirection.Back ? carRulesConfig.BackFlipNitroReward : 0f;
 
         AddNitro(nitroReward);
+
+        if (IsPlayerCar)
+        {
+            LevelHUD.Instance.OnPlayerCarFlip(rotateDirection, nitroReward, flipInARow);
+        }
     }
 
     private IEnumerator ControllAngularVelocity()
     {
         while (true)
         {
-            if (IsRotating && AnyWheelsOnRoad)
+            if (!BlockAllAction && IsRotating && AnyWheelsOnRoad)
                 rb.angularVelocity = Vector3.zero;
 
             yield return null;
@@ -228,7 +272,7 @@ public class CarBase : MonoBehaviour
         _accelerationCoroutine = StartCoroutine(Accelerate());
     }
 
-    public void EndAcceleration()
+    public void StopAcceleration()
     {
         if (_accelerationCoroutine != null)
             StopCoroutine(_accelerationCoroutine);
@@ -240,44 +284,52 @@ public class CarBase : MonoBehaviour
     {   
         while (true)
         {
-            if (AmoutOfNitro > 0f)
+            if (!BlockAllAction)
             {
-                IsNitroUsed = true;
-                
-                if (Speed < maxSpeedWithNitro)
+                if (AmoutOfNitro > 0f)
                 {
-                    var direction = new Vector3(0f, -Mathf.Sin(transform.eulerAngles.x * Mathf.Deg2Rad), Mathf.Cos(transform.eulerAngles.x * Mathf.Deg2Rad));
+                    IsNitroUsed = true;
+                    
+                    if (Speed < maxSpeedWithNitro)
+                    {
+                        var direction = new Vector3(0f, -Mathf.Sin(transform.eulerAngles.x * Mathf.Deg2Rad), Mathf.Cos(transform.eulerAngles.x * Mathf.Deg2Rad));
 
-                    rb.AddForce(direction * nitroPower * Time.deltaTime, ForceMode.Acceleration);
+                        rb.AddForce(direction * nitroPower * Time.deltaTime, ForceMode.Acceleration);
+                    }
+
+                    RemoveNitro(Time.deltaTime);
                 }
 
-                AmoutOfNitro -= Time.deltaTime;
-            }
-
-            else
-            {
-                IsNitroUsed = false;
+                else
+                {
+                    IsNitroUsed = false;
+                }
             }
 
             yield return null;
         }
     }
 
-    public void BlockAllActions()
+    public void OnStabilizationStart()
     {
-        IsAllActionsBlock = true;
+        IsStabilizate = true;
 
         StopAllCoroutines();
     }
 
-    public void UnblockAllActions()
+    public void OnStabilizationEnd()
     {
-        IsAllActionsBlock = false;
+        IsStabilizate = false;
 
         _autoMoveCoroutine = StartCoroutine(AutoMove());
         _controlAngularVelocityCoroutine = StartCoroutine(ControllAngularVelocity());
 
         AddNitro(carRulesConfig.NitroBonusAfterStabilize);
+
+        if (IsPlayerCar)
+        {
+            LevelHUD.Instance.OnPlayerCarFlip(RotateDirection.Stabilization, carRulesConfig.NitroBonusAfterStabilize, 1);
+        }
     }
 
     public void AddNitro(float percent)
@@ -286,6 +338,47 @@ public class CarBase : MonoBehaviour
         var nitro = AmoutOfNitro + value;
 
         AmoutOfNitro = Mathf.Clamp(nitro, 0f, maxAmountOfNitro);
+
+        onAmountOfNitroChange(AmoutOfNitro, maxAmountOfNitro);
+    }
+
+    public void RemoveNitro(float value)
+    {
+        var nitro = AmoutOfNitro - value;
+
+        AmoutOfNitro = Mathf.Max(0, nitro);
+
+        onAmountOfNitroChange?.Invoke(AmoutOfNitro, maxAmountOfNitro);
+    }
+
+    public void SubscribeToAmountOfNitroChange(Action<float, float> callBack)
+    {
+        onAmountOfNitroChange += callBack;
+
+        AddNitro(0f);
+    }
+
+    public void UnubscribeToAmountOfNitroChange(Action<float, float> callBack)
+    {
+        onAmountOfNitroChange -= callBack;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Finish"))
+        {
+            LevelController.Instance.OnAnyCarFinish(IsPlayerCar, timer.Time);
+        }
+    }
+
+    public void BlockActions()
+    {
+        BlockAllAction = true;
+    }
+
+    public void UnblockActions()
+    {
+        BlockAllAction = false;
     }
 }
 

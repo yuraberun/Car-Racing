@@ -67,7 +67,7 @@ public class CarRotationStabilizer : MonoBehaviour
 
     private IEnumerator Stabilizer()
     {
-        _carBase.BlockAllActions();
+        _carBase.OnStabilizationStart();
         _detectColision = false;
 
         var frontAxle = _carBase.FrontAxle;
@@ -80,7 +80,7 @@ public class CarRotationStabilizer : MonoBehaviour
             yield return null;
         }
 
-        _carBase.UnblockAllActions();
+        _carBase.OnStabilizationEnd();
         _detectColision = true;
     }
 }
