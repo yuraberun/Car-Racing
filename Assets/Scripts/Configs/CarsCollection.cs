@@ -31,4 +31,9 @@ public class CarsCollection : ScriptableObject
 
         return car.prefab;
     }
+
+    public List<Car> GetCollection()
+    {
+        return _cars;
+    }
 }

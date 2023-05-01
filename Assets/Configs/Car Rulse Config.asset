@@ -15,8 +15,8 @@ MonoBehaviour:
   _timeToStartStabilizeRotation: 2
   _stabilizeRotationSpeed: 250
   _blockRotationDistance: 0.18
-  _nitroBonusAfterStabilize: 0.35
-  _degreesToForwardFlip: 340
+  _nitroBonusAfterStabilize: 0.6
+  _degreesToForwardFlip: 330
   _forwardFlipNitroReward: 0.75
-  _degreesToBackFlip: 340
+  _degreesToBackFlip: 330
   _backFlipNitroReward: 0.5

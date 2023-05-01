@@ -38,7 +38,8 @@ public class LevelController : SingletonComponent<LevelController>
     {
         Time.timeScale = 1f;
 
-        var playerCarPrefab = _carsCollection.GetRandomCarPrefab();
+        var playerCarName = (CarName)PlayerPrefs.GetInt("PlayerCar");
+        var playerCarPrefab = _carsCollection.GetCarPrefab(playerCarName);
         PlayerCar = Instantiate(playerCarPrefab, _playerCarSpawnTransform.position, Quaternion.identity).GetComponent<CarBase>();
         PlayerCar.Init(true);
         Player = gameObject.AddComponent<Player>();

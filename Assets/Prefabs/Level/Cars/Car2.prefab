@@ -107,11 +107,11 @@ MonoBehaviour:
     leftWheel: {fileID: 3377968330165307991}
     rightWheel: {fileID: 3377968330461255385}
   autoSpeed: 425
-  brakePower: 110
+  brakePower: 75
   nitroPower: 475
-  startMoveSpeed: 2.5
+  startMoveSpeed: 2
   maxAutoMoveSpeed: 13.5
-  maxSpeedWithNitro: 25
+  maxSpeedWithNitro: 35
   maxAmountOfNitro: 2.1
   rotateSpeed: 220
   angularVelocity: 1.3

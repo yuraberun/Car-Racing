@@ -52,6 +52,13 @@ public class CarBase : MonoBehaviour
     public Axle FrontAxle => axles.Find(axle => axle.axlePosition == AxlePosition.Front);
 
     public float Speed => rb.velocity.magnitude;
+
+    public float Mass => rb.mass;
+    public float MotorPower => autoSpeed;
+    public float NitroPower => nitroPower;
+    public float MaxAmountOfNitro => maxAmountOfNitro;
+    public float RotateSpeed => rotateSpeed;
+
     public float AmoutOfNitro { get; protected set; }
 
     public bool IsNitroUsed { get; protected set; }
@@ -158,6 +165,8 @@ public class CarBase : MonoBehaviour
 
             yield return null;
         }
+
+        rb.velocity = Vector3.zero;
     }
 
     public void StartRotate(RotateDirection rotateDirection)
@@ -341,7 +350,7 @@ public class CarBase : MonoBehaviour
 
         AmoutOfNitro = Mathf.Clamp(nitro, 0f, maxAmountOfNitro);
 
-        onAmountOfNitroChange(AmoutOfNitro, maxAmountOfNitro);
+        onAmountOfNitroChange?.Invoke(AmoutOfNitro, maxAmountOfNitro);
     }
 
     public void RemoveNitro(float value)

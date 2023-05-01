@@ -34,6 +34,6 @@ public class PauseWindow : Window
     {
         base.OnButtonClick();
         
-        LevelController.Instance.RestartLevel();
+        LevelController.Instance.ExitToMenu();
     }
 }
