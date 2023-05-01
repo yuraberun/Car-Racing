@@ -30,8 +30,10 @@ public class EnemyAI : MonoBehaviour
 
     public void Activate()
     {
-        _nitroControlCoroutine = StartCoroutine(NitroControl());
+        //_nitroControlCoroutine = StartCoroutine(NitroControl());
         //_rotateControlCoroutine = StartCoroutine(RotateControl());
+
+        _carBase.Deactivate();
     }
 
     public void Deactivate()
@@ -47,7 +49,7 @@ public class EnemyAI : MonoBehaviour
             {
                 var stopValue = _carBase.AmoutOfNitro - GetRandomNitroValue();
 
-                _carBase.StartAcceleration();
+                _carBase.StartUseNitro();
 
                 yield return StartCoroutine(StopUseNitro(stopValue));
             }
@@ -61,7 +63,7 @@ public class EnemyAI : MonoBehaviour
         if (_carBase.AmoutOfNitro <= _minNitroValueToUse)
             return false;
 
-        if (!_carBase.AnyWheelsOnRoad || _carBase.IsRotating || _carBase.IsStabilizate
+        if (!_carBase.AnyWheelOnRoad || _carBase.IsRotating || _carBase.IsStabilizate
             || _carBase.BlockAllAction)
             return false;
 
@@ -89,8 +91,10 @@ public class EnemyAI : MonoBehaviour
             yield return null;
         }
 
-        _carBase.StopAcceleration();
+        _carBase.StopUseNitro();
     }
+
+    /*
 
     private IEnumerator RotateControl()
     {
@@ -119,11 +123,11 @@ public class EnemyAI : MonoBehaviour
         if (percentOfNitro > _percentOfNitroToStartRotating)
             return RotateDirection.None;
 
-        if (!_carBase.IsAxleOnRoad(RotateDirection.Forward))
-            return RotateDirection.Forward;
+        //if (!_carBase.IsAxleOnRoad(RotateDirection.Forward))
+        //    return RotateDirection.Forward;
 
-        if (!_carBase.IsAxleOnRoad(RotateDirection.Back))
-            return RotateDirection.Back;
+        //if (!_carBase.IsAxleOnRoad(RotateDirection.Back))
+        //    return RotateDirection.Back;
         
         return RotateDirection.None;
     }
@@ -139,4 +143,5 @@ public class EnemyAI : MonoBehaviour
 
         _carBase.StopRotate();
     }
+    */
 }

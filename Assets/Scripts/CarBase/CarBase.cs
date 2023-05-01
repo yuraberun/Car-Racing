@@ -5,17 +5,17 @@ using System;
 
 public class CarBase : MonoBehaviour
 {
+    [Header("Setings")]
     [SerializeField] private CarName _carName;
 
-    [Header("Configs")]
     [SerializeField] protected CarRulesConfig carRulesConfig;
 
     [Header("Components")]
     public Rigidbody rb;
-    
-    [SerializeField] protected Transform centerOfMass;
 
     [SerializeField] protected ParticleSystem nitroEffect;
+    
+    [SerializeField] protected Transform centerOfMass;
 
     [SerializeField] protected List<Axle> axles;
 
@@ -35,25 +35,26 @@ public class CarBase : MonoBehaviour
     [SerializeField] protected float angularVelocity;
 
     protected CarRotationStabilizer carRotationStabilizer;
+    
+    protected Action<float, float> onUseNitro;
 
     protected Timer timer;
 
-    protected Action<float, float> onAmountOfNitroChange;
-
     private Coroutine _autoMoveCoroutine;
     private Coroutine _rotateCoroutine;
-    private Coroutine _accelerationCoroutine;
+    private Coroutine _useNitroCoroutine;
     private Coroutine _controlAngularVelocityCoroutine;
-
-    public Vector3 MoveDirection => new Vector3(0f, -Mathf.Sin(transform.eulerAngles.x * Mathf.Deg2Rad), Mathf.Cos(transform.eulerAngles.x * Mathf.Deg2Rad));
-
-    public RotateDirection CurrRotateDirection { get; protected set; }
+    private Coroutine _flipCalculateCoroutine;
 
     public CarName CarName => _carName;
 
     public Axle FrontAxle => axles.Find(axle => axle.axlePosition == AxlePosition.Front);
 
-    public float Speed => rb.velocity.magnitude;
+    public Axle BackAxle => axles.Find(axle => axle.axlePosition == AxlePosition.Back);
+
+    public Vector3 MoveDirection => new Vector3(0f, -Mathf.Sin(transform.eulerAngles.x * Mathf.Deg2Rad), Mathf.Cos(transform.eulerAngles.x * Mathf.Deg2Rad));
+
+    public RotateDirection CurrRotateDirection { get; protected set; }
 
     public float Mass => rb.mass;
     public float MotorPower => autoSpeed;
@@ -62,9 +63,7 @@ public class CarBase : MonoBehaviour
     public float RotateSpeed => rotateSpeed;
 
     public float AmoutOfNitro { get; protected set; }
-
-    public float CurrDegree { get; protected set; }
-    public float TimeOnAir;// { get; protected set; }
+    public float CurrSpeed => rb.velocity.magnitude;
 
     public bool IsNitroUsed { get; protected set; }
     public bool IsRotating { get; protected set; }
@@ -73,7 +72,9 @@ public class CarBase : MonoBehaviour
     public bool BlockAllAction { get; protected set; }
 
     public bool AllWheelsOnRoad => axles.FindAll(axle => !axle.TwoWheelsOnRoad).Count == 0;
-    public bool AnyWheelsOnRoad => axles.FindAll(axle => !axle.AnyWheelOnRoad).Count == 0;
+    public bool AnyWheelOnRoad => axles.FindAll(axle => !axle.AnyWheelOnRoad).Count == 0;
+    public bool BodyOnRoad { get; protected set; }
+    public bool AnyPartOnRoad => BodyOnRoad || AnyWheelOnRoad;
 
     public virtual void Init(bool isPlayerCar)
     {
@@ -95,10 +96,14 @@ public class CarBase : MonoBehaviour
 
     public void Activate()
     {
+        if (!IsPlayerCar)
+            return;
+
         BlockAllAction = false;
 
         StartAutoMove();
 
+        _flipCalculateCoroutine = StartCoroutine(CalculateFlip());
         _controlAngularVelocityCoroutine = StartCoroutine(ControllAngularVelocity());
 
         carRotationStabilizer.Activate();
@@ -113,11 +118,12 @@ public class CarBase : MonoBehaviour
         StartCoroutine(AutoStop());
     }
 
+    /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// Auto Move
+    /////////////////////////////////////////////////////
+
     public void StartAutoMove()
     {
-        if (BlockAllAction)
-            return;
-
         if (_autoMoveCoroutine != null)
             StopCoroutine(_autoMoveCoroutine);
 
@@ -135,20 +141,21 @@ public class CarBase : MonoBehaviour
 
     private IEnumerator AutoMove()
     {
-        rb.velocity = new Vector3(0, 0, startMoveSpeed);
+        if (!BlockAllAction)
+            rb.velocity = new Vector3(0, 0, startMoveSpeed);
 
         while (true)
         {
             if (!BlockAllAction)
             {
-                if (AllWheelsOnRoad && Speed < maxAutoMoveSpeed)
+                if (AllWheelsOnRoad && CurrSpeed < maxAutoMoveSpeed)
                 {
                     var force = MoveDirection * autoSpeed * Time.deltaTime;
 
                     rb.AddForce(force, ForceMode.Acceleration);
                 }
 
-                if (Speed > maxAutoMoveSpeed)
+                if (CurrSpeed > maxAutoMoveSpeed)
                 {
                     var force = -MoveDirection * brakePower * Time.deltaTime;
 
@@ -162,9 +169,9 @@ public class CarBase : MonoBehaviour
 
     private IEnumerator AutoStop()
     {
-        while (Speed > 0f)
+        while (CurrSpeed > 0f)
         {
-            var force = -MoveDirection * autoSpeed * Time.deltaTime;
+            var force = -MoveDirection * brakePower * Time.deltaTime;
 
             rb.AddForce(force, ForceMode.Acceleration);
 
@@ -173,6 +180,10 @@ public class CarBase : MonoBehaviour
 
         rb.velocity = Vector3.zero;
     }
+
+    /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// Rotation
+    /////////////////////////////////////////////////////
 
     public void StartRotate(RotateDirection rotateDirection)
     {
@@ -193,16 +204,14 @@ public class CarBase : MonoBehaviour
 
         rb.angularVelocity = new Vector3(angularVelocity * coef, 0f ,0f);
 
-        CurrRotateDirection = RotateDirection.None;
+        //CurrRotateDirection = RotateDirection.None;
         IsRotating = false;
     }
 
     private IEnumerator Rotate(RotateDirection rotateDirection)
     {
-        var degreesToFlip = CurrRotateDirection == RotateDirection.Forward ? carRulesConfig.DegreesToForwardFlip : carRulesConfig.DegreesToBackFlip;
-        CurrDegree = 0f;
-        TimeOnAir = 0f;
-        var flipsCount = 0;
+        //var degreesToFlip = CurrRotateDirection == RotateDirection.Forward ? carRulesConfig.DegreesToForwardFlip : carRulesConfig.DegreesToBackFlip;
+        //var flipsCount = 0;
         var speed = rotateSpeed * ((rotateDirection == RotateDirection.Back) ? -1 : 1);
 
         while (true)
@@ -212,11 +221,11 @@ public class CarBase : MonoBehaviour
                 IsRotating = true;
 
                 var rotateValue = speed * Time.deltaTime;
-                CurrDegree += rotateValue;
 
                 rb.angularVelocity = Vector3.zero;
                 transform.rotation = transform.rotation * Quaternion.AngleAxis(rotateValue, Vector3.right);
                 
+                /*
                 TimeOnAir += Time.deltaTime;
 
                 if (Mathf.Abs(CurrDegree) >= degreesToFlip)
@@ -226,13 +235,16 @@ public class CarBase : MonoBehaviour
 
                     OnFlip(rotateDirection, flipsCount);
                 }
+                */
             }
 
             else
             {
+                /*
                 TimeOnAir = 0f;
                 CurrDegree = 0f;
                 flipsCount = 0;
+                */
 
                 IsRotating = false;
             }
@@ -260,17 +272,68 @@ public class CarBase : MonoBehaviour
         return true;
     }
 
-    public bool IsAxleOnRoad(RotateDirection rotateDirection)
+    private IEnumerator ControllAngularVelocity()
     {
-        var axlePosition = rotateDirection == RotateDirection.Forward ? AxlePosition.Back
-            : rotateDirection == RotateDirection.Back ? AxlePosition.Front : AxlePosition.None;
+        while (true)
+        {
+            if (!BlockAllAction && IsRotating && AnyWheelOnRoad)
+                rb.angularVelocity = Vector3.zero;
 
-        if (axlePosition == AxlePosition.None)
-            return false;
+            yield return null;
+        }
+    }
 
-        var axle = axles.Find(axle => axle.axlePosition == axlePosition);
+    /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// Flip
+    /////////////////////////////////////////////////////
 
-        return !axle.AnyWheelOnRoad;
+    private IEnumerator CalculateFlip()
+    {
+        var degree = 0f;
+        var timeOnAir = 0f;
+
+        while (true)
+        {
+            if (!BlockAllAction && !AnyPartOnRoad)
+            {   
+                var toNextFrontFlip = carRulesConfig.DegreesToForwardFlip;
+                var toNextBackFlip = carRulesConfig.DegreesToBackFlip;
+
+                degree = 0f;
+
+                while (!AnyPartOnRoad)
+                {
+                    var prevFrameDegree = WrapAngle(transform.localRotation.eulerAngles.x);
+
+                    yield return null;
+
+                    var currFrameDegree = WrapAngle(transform.localRotation.eulerAngles.x);
+
+                    if (prevFrameDegree != currFrameDegree)
+                    {
+                        var direction = CurrRotateDirection == RotateDirection.Forward ? 1 : -1;
+                    
+                        degree += Mathf.Abs(currFrameDegree - prevFrameDegree) * direction;
+
+                        if (degree > 0 && degree >= toNextFrontFlip)
+                        {
+                            OnFlip(RotateDirection.Forward, Mathf.RoundToInt(toNextFrontFlip / carRulesConfig.DegreesToForwardFlip));
+
+                            toNextFrontFlip += carRulesConfig.DegreesToForwardFlip;
+                        }
+
+                        else if (degree < 0 && Mathf.Abs(degree) >= toNextBackFlip)
+                        {
+                            OnFlip(RotateDirection.Back, Mathf.RoundToInt(toNextBackFlip / carRulesConfig.DegreesToBackFlip));
+
+                            toNextBackFlip += carRulesConfig.DegreesToBackFlip;
+                        }
+                    }
+                }
+            }
+
+            yield return null;
+        }
     }
 
     private void OnFlip(RotateDirection rotateDirection, int flipInARow = 1)
@@ -286,35 +349,38 @@ public class CarBase : MonoBehaviour
         }
     }
 
-    private IEnumerator ControllAngularVelocity()
+    private static float WrapAngle(float angle)
     {
-        while (true)
-        {
-            if (!BlockAllAction && IsRotating && AnyWheelsOnRoad)
-                rb.angularVelocity = Vector3.zero;
+        angle %= 360;
 
-            yield return null;
-        }
+        if (angle >180)
+            return angle - 360;
+
+        return angle;
     }
 
-    public void StartAcceleration()
-    {
-        if (_accelerationCoroutine != null)
-            StopCoroutine(_accelerationCoroutine);
+    /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// Nitro
+    /////////////////////////////////////////////////////
 
-        _accelerationCoroutine = StartCoroutine(Accelerate());
+    public void StartUseNitro()
+    {
+        if (_useNitroCoroutine != null)
+            StopCoroutine(_useNitroCoroutine);
+
+        _useNitroCoroutine = StartCoroutine(UseNitro());
     }
 
-    public void StopAcceleration()
+    public void StopUseNitro()
     {
-        if (_accelerationCoroutine != null)
-            StopCoroutine(_accelerationCoroutine);
+        if (_useNitroCoroutine != null)
+            StopCoroutine(_useNitroCoroutine);
 
-        IsNitroUsed = false;
         nitroEffect.Stop();
+        IsNitroUsed = false;
     }
 
-    private IEnumerator Accelerate()
+    private IEnumerator UseNitro()
     {   
         while (true)
         {
@@ -326,7 +392,7 @@ public class CarBase : MonoBehaviour
 
                     IsNitroUsed = true;
                     
-                    if (Speed < maxSpeedWithNitro)
+                    if (CurrSpeed < maxSpeedWithNitro)
                     {
                         var direction = new Vector3(0f, -Mathf.Sin(transform.eulerAngles.x * Mathf.Deg2Rad), Mathf.Cos(transform.eulerAngles.x * Mathf.Deg2Rad));
 
@@ -346,6 +412,41 @@ public class CarBase : MonoBehaviour
             yield return null;
         }
     }
+    
+    public void AddNitro(float percent)
+    {
+        var value = maxAmountOfNitro * percent;
+        var nitro = AmoutOfNitro + value;
+
+        AmoutOfNitro = Mathf.Clamp(nitro, 0f, maxAmountOfNitro);
+
+        onUseNitro?.Invoke(AmoutOfNitro, maxAmountOfNitro);
+    }
+
+    public void RemoveNitro(float value)
+    {
+        var nitro = AmoutOfNitro - value;
+
+        AmoutOfNitro = Mathf.Max(0, nitro);
+
+        onUseNitro?.Invoke(AmoutOfNitro, maxAmountOfNitro);
+    }
+
+    public void SubscribeOnUseNitro(Action<float, float> callBack)
+    {
+        onUseNitro += callBack;
+
+        AddNitro(0f);
+    }
+
+    public void UnsubscribeOnUseNitro(Action<float, float> callBack)
+    {
+        onUseNitro -= callBack;
+    }
+
+    /////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////// Stabilization
+    /////////////////////////////////////////////////////
 
     public void OnStabilizationStart()
     {
@@ -369,35 +470,14 @@ public class CarBase : MonoBehaviour
         }
     }
 
-    public void AddNitro(float percent)
+    public void BlockActions()
     {
-        var value = maxAmountOfNitro * percent;
-        var nitro = AmoutOfNitro + value;
-
-        AmoutOfNitro = Mathf.Clamp(nitro, 0f, maxAmountOfNitro);
-
-        onAmountOfNitroChange?.Invoke(AmoutOfNitro, maxAmountOfNitro);
+        BlockAllAction = true;
     }
 
-    public void RemoveNitro(float value)
+    public void UnblockActions()
     {
-        var nitro = AmoutOfNitro - value;
-
-        AmoutOfNitro = Mathf.Max(0, nitro);
-
-        onAmountOfNitroChange?.Invoke(AmoutOfNitro, maxAmountOfNitro);
-    }
-
-    public void SubscribeToAmountOfNitroChange(Action<float, float> callBack)
-    {
-        onAmountOfNitroChange += callBack;
-
-        AddNitro(0f);
-    }
-
-    public void UnubscribeToAmountOfNitroChange(Action<float, float> callBack)
-    {
-        onAmountOfNitroChange -= callBack;
+        BlockAllAction = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -409,14 +489,20 @@ public class CarBase : MonoBehaviour
         }
     }
 
-    public void BlockActions()
+    private void OnCollisionEnter(Collision other)
     {
-        BlockAllAction = true;
+        if (other.gameObject.layer == LayerMask.NameToLayer("Road"))
+        {
+            BodyOnRoad = true;
+        }
     }
 
-    public void UnblockActions()
+    private void OnCollisionExit(Collision other)
     {
-        BlockAllAction = false;
+        if (other.gameObject.layer == LayerMask.NameToLayer("Road"))
+        {
+            BodyOnRoad = false;
+        }
     }
 }
 
