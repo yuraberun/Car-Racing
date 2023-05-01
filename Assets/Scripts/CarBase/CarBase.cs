@@ -15,6 +15,8 @@ public class CarBase : MonoBehaviour
     
     [SerializeField] protected Transform centerOfMass;
 
+    [SerializeField] protected ParticleSystem nitroEffect;
+
     [SerializeField] protected List<Axle> axles;
 
     [Header("Move")]
@@ -289,6 +291,7 @@ public class CarBase : MonoBehaviour
             StopCoroutine(_accelerationCoroutine);
 
         IsNitroUsed = false;
+        nitroEffect.Stop();
     }
 
     private IEnumerator Accelerate()
@@ -299,6 +302,8 @@ public class CarBase : MonoBehaviour
             {
                 if (AmoutOfNitro > 0f)
                 {
+                    nitroEffect.Play();
+
                     IsNitroUsed = true;
                     
                     if (Speed < maxSpeedWithNitro)
@@ -313,6 +318,7 @@ public class CarBase : MonoBehaviour
 
                 else
                 {
+                    nitroEffect.Stop();
                     IsNitroUsed = false;
                 }
             }
