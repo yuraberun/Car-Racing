@@ -159,7 +159,7 @@ public class Car : MonoBehaviour
 
     private IEnumerator AutoStop()
     {
-        while (MoveSpeed > 0f)
+        while (_rigidbody.velocity.z > 0)
         {
             var force = -MoveDirection * _autoSpeed * Time.deltaTime;
 
@@ -168,7 +168,7 @@ public class Car : MonoBehaviour
             yield return null;
         }
 
-        _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+        _rigidbody.velocity = Vector3.zero;
     }
 
     ///////////////////////////////////////////////////// Rotation

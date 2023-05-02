@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 743505738282840004}
   - component: {fileID: 743505738282840003}
   - component: {fileID: 743505738282840002}
-  - component: {fileID: 743505738282840000}
+  - component: {fileID: 4874105095006382669}
   m_Layer: 3
   m_Name: Road Mesh Holder
   m_TagString: Untagged
@@ -516,7 +516,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &743505738282840000
+--- !u!64 &4874105095006382669
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -528,7 +528,7 @@ MeshCollider:
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 0
-  m_CookingOptions: -1
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1 &743505739513071908
 GameObject:
@@ -909,7 +909,7 @@ GameObject:
   - component: {fileID: 743505739780615548}
   - component: {fileID: 743505739780615551}
   - component: {fileID: 743505739780615550}
-  - component: {fileID: 743505739780615549}
+  - component: {fileID: 2998910931878259431}
   m_Layer: 3
   m_Name: Road Mesh Holder
   m_TagString: Untagged
@@ -984,7 +984,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &743505739780615549
+--- !u!64 &2998910931878259431
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -996,7 +996,7 @@ MeshCollider:
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 0
-  m_CookingOptions: -1
+  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1 &743505739847028984
 GameObject:
