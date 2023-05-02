@@ -13,6 +13,9 @@ public class LevelController : SingletonComponent<LevelController>
     [SerializeField] private Transform _playerCarSpawnTransform;
     [SerializeField] private Transform _enemyCarSpawnTransform;
 
+    [SerializeField] private PathCreation.PathCreator _playerRoad;
+    [SerializeField] private PathCreation.PathCreator _enemyRoad;
+
     [Header("Settings")]
     [SerializeField] private float _showResultsWindowDelay;
 
@@ -41,17 +44,17 @@ public class LevelController : SingletonComponent<LevelController>
         Time.timeScale = 1f;
 
         var playerCarName = (CarName)PlayerPrefs.GetInt("PlayerCar");
-        var playerCarPrefab = _carsCollection.GetCarPrefab(playerCarName);
-        PlayerCar = Instantiate(playerCarPrefab, _playerCarSpawnTransform.position, Quaternion.identity).GetComponent<Car>();
+        var playerCarInfo = _carsCollection.GetCarInfoPrefab(playerCarName);
+        PlayerCar = Instantiate(playerCarInfo.prefab, _playerCarSpawnTransform.position, Quaternion.identity).GetComponent<Car>();
         PlayerCar.Init(true);
         Player = gameObject.AddComponent<Player>();
         Player.Init(PlayerCar);
 
-        var enemyCarPrefab = _carsCollection.GetRandomCarPrefab();
-        //EnemyCar = Instantiate(enemyCarPrefab, _enemyCarSpawnTransform.position, Quaternion.identity).GetComponent<Car>();
-        //EnemyCar.Init(false);
-        //EnemyAI = gameObject.AddComponent<EnemyAI>();
-        //EnemyAI.Init(EnemyCar, PlayerCar.transform);
+        var enemyCarInfo = _carsCollection.GetRandomCarInfoPrefab();
+        EnemyCar = Instantiate(enemyCarInfo.prefab, _enemyCarSpawnTransform.position, Quaternion.identity).GetComponent<Car>();
+        EnemyCar.Init(false);
+        EnemyAI = gameObject.AddComponent<EnemyAI>();
+        EnemyAI.Init(EnemyCar, _enemyRoad.path, enemyCarInfo.enemyAiRules, PlayerCar.transform);
 
         LevelHUD.Instance.Init();
         _finishCarInfos.Clear();
@@ -64,8 +67,8 @@ public class LevelController : SingletonComponent<LevelController>
         Player.UnblockInput();
         PlayerCar.Activate();
         
-        //EnemyAI.Activate();
-        //EnemyCar.Activate();
+        EnemyAI.Activate();
+        EnemyCar.Activate();
     }
 
     public void EndLevel()

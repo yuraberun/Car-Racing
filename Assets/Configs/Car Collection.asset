@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cars:
   - carName: 1
+    enemyAiRules: {fileID: 11400000, guid: 8b0d2192c3d84234ea7a60e64f453cef, type: 2}
     prefab: {fileID: 5154303358389193167, guid: 304d570925fef8443aafe133bc72a73b, type: 3}
   - carName: 2
+    enemyAiRules: {fileID: 11400000, guid: 319887fd4beccf14cbce1e9d628264e8, type: 2}
     prefab: {fileID: 3377968329991709778, guid: 27e7a6927fb692241884e6cc2d2a76be, type: 3}
   - carName: 3
+    enemyAiRules: {fileID: 11400000, guid: 780df223be0f1f444a231548d2d9b0ed, type: 2}
     prefab: {fileID: 6050388341932836739, guid: ead775af0a1b82142a813f918dd37ce1, type: 3}

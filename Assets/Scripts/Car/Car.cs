@@ -50,21 +50,27 @@ public class Car : MonoBehaviour
 
     public bool IsPlayer { get; set; }
 
+    public bool BlockAllAction { get; private set; }
+
     public Axle FrontAxle => _axles.Find(axle => axle.type == AxleType.Front);
 
     public Axle BackAxle => _axles.Find(axle => axle.type == AxleType.Back);
 
     public float MoveSpeed => Mathf.Abs(_rigidbody.velocity.z);
     public float RotationSpeed => Mathf.Abs(_rigidbody.angularVelocity.x);
+    public float InspectorDegree => WrapAngle(transform.localRotation.eulerAngles.x);
 
     public Vector3 MoveDirection => new Vector3(0f, -Mathf.Sin(transform.eulerAngles.x * Mathf.Deg2Rad), Mathf.Cos(transform.eulerAngles.x * Mathf.Deg2Rad));
 
     public RotateType RotateDirection => _rigidbody.angularVelocity.x > 0 ? RotateType.Front : RotateType.Back;
+    public int RotateDirectionSign => _rigidbody.angularVelocity.x > 0 ? 1 : -1;
+
+    public float TimeInAir { get; private set; }
+    public float RotatedDegreeInAir { get; private set; }
 
     public bool IsNitroUsed { get; private set; }
-    public bool BlockAllAction { get; private set; }
-      
     public float AmoutOfNitro { get; private set; }
+    public float PercentOfNitro => AmoutOfNitro / _maxAmountOfNitro;
 
     public bool AllWheelsOnRoad => _axles.FindAll(axle => !axle.TwoWheelsOnRoad).Count == 0;
     public bool AnyWheelOnRoad => _axles.FindAll(axle => !axle.AnyWheelOnRoad).Count == 0;
@@ -74,9 +80,6 @@ public class Car : MonoBehaviour
     public virtual void Init(bool isPlayer)
     {
         IsPlayer = isPlayer;
-
-        if (!isPlayer)
-            return;
         _rigidbody.centerOfMass = _centerOfMass.transform.localPosition;
         AmoutOfNitro = _maxAmountOfNitro;
 
@@ -94,9 +97,6 @@ public class Car : MonoBehaviour
 
     public void Activate()
     {
-        if (!IsPlayer) // temp            
-            return;
-            
         _stabilizer.Activate();
         _timer.Start();
 
@@ -161,14 +161,14 @@ public class Car : MonoBehaviour
     {
         while (MoveSpeed > 0f)
         {
-            var force = -MoveDirection * _brakePower * Time.deltaTime;
+            var force = -MoveDirection * _autoSpeed * Time.deltaTime;
 
             _rigidbody.AddForce(force, ForceMode.Acceleration);
 
             yield return null;
         }
 
-        _rigidbody.velocity = Vector3.zero;
+        _rigidbody.constraints = RigidbodyConstraints.FreezeAll;
     }
 
     ///////////////////////////////////////////////////// Rotation
@@ -190,8 +190,8 @@ public class Car : MonoBehaviour
     {
         var direction = newDirection == RotateType.Front ? 1 : -1;
 
-        if (!BlockAllAction && newDirection != RotateDirection)
-            _rigidbody.angularVelocity = new Vector3(_startRotateSpeed * direction, 0f ,0f);
+        if (newDirection != RotateDirection)
+            AddMinAngularVelocity(direction);
 
         while (true)
         {
@@ -221,6 +221,14 @@ public class Car : MonoBehaviour
         return true;
     }
 
+    public void AddMinAngularVelocity(int direction, float coef = 1f)
+    {
+        if (!BlockAllAction)
+        {
+            _rigidbody.angularVelocity += new Vector3(_startRotateSpeed * coef * direction, 0f ,0f);
+        }
+    }
+
     ///////////////////////////////////////////////////// Flip
 
     public void StartCalcualteFlip()
@@ -241,9 +249,6 @@ public class Car : MonoBehaviour
         var toFrontFlip = _rulesConfig.DegreesToFrontFlip;
         var toBackFlip = _rulesConfig.DegreesToBackFlip;
 
-        var degree = 0f;
-        //var timeOnAir = 0f;
-
         while (true)
         {
             if (!BlockAllAction && !AnyPartOnRoad)
@@ -251,30 +256,33 @@ public class Car : MonoBehaviour
                 var toNextFrontFlip = toFrontFlip;
                 var toNextBackFlip = toBackFlip;
 
-                degree = 0f;
+                TimeInAir = 0f;
+                RotatedDegreeInAir = 0f;
 
                 while (!AnyPartOnRoad)
                 {
-                    var prevFrameDegree = WrapAngle(transform.localRotation.eulerAngles.x);
+                    var prevFrameDegree = InspectorDegree;
 
                     yield return null;
 
-                    var currFrameDegree = WrapAngle(transform.localRotation.eulerAngles.x);
+                    TimeInAir += Time.deltaTime;
+
+                    var currFrameDegree = InspectorDegree;
 
                     if (prevFrameDegree != currFrameDegree)
                     {
                         var direction = RotateDirection == RotateType.Front ? 1 : -1;
                     
-                        degree += Mathf.Abs(currFrameDegree - prevFrameDegree) * direction;
+                        RotatedDegreeInAir += Mathf.Abs(currFrameDegree - prevFrameDegree) * direction;
 
-                        if (degree > 0 && degree >= toNextFrontFlip)
+                        if (RotatedDegreeInAir > 0 && RotatedDegreeInAir >= toNextFrontFlip)
                         {
                             OnFlip(RotateType.Front, Mathf.RoundToInt(toNextFrontFlip / toFrontFlip));
 
                             toNextFrontFlip += toFrontFlip;
                         }
 
-                        else if (degree < 0 && Mathf.Abs(degree) >= toNextBackFlip)
+                        else if (RotatedDegreeInAir < 0 && Mathf.Abs(RotatedDegreeInAir) >= toNextBackFlip)
                         {
                             OnFlip(RotateType.Back, Mathf.RoundToInt(toNextBackFlip / toBackFlip));
 
@@ -282,6 +290,9 @@ public class Car : MonoBehaviour
                         }
                     }
                 }
+
+                TimeInAir = 0f;
+                RotatedDegreeInAir = 0f;
             }
 
             yield return null;

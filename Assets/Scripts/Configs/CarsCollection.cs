@@ -6,33 +6,35 @@ using UnityEngine;
 public class CarsCollection : ScriptableObject
 {
     [System.Serializable]
-    public class Car
+    public class CarInfo
     {
         public CarName carName;
+
+        public EnemyAiRules enemyAiRules;
 
         public GameObject prefab;
     }
 
-    [SerializeField] private List<Car> _cars = new List<Car>();
+    [SerializeField] private List<CarInfo> _cars = new List<CarInfo>();
 
-    public GameObject GetCarPrefab(CarName carName)
+    public CarInfo GetCarInfoPrefab(CarName carName)
     {
-        var car = _cars.Find(car => car.carName == carName);
+        var carInfo = _cars.Find(carInfo => carInfo.carName == carName);
 
-        if (car == null)
+        if (carInfo == null)
             Debug.LogError("the collection does not contain such a car");
 
-        return car.prefab;
+        return carInfo;
     }
 
-    public GameObject GetRandomCarPrefab()
+    public CarInfo GetRandomCarInfoPrefab()
     {
-        var car = _cars[Random.Range(0, _cars.Count)];
+        var carInfo = _cars[Random.Range(0, _cars.Count)];
 
-        return car.prefab;
+        return carInfo;
     }
 
-    public List<Car> GetCollection()
+    public List<CarInfo> GetCollection()
     {
         return _cars;
     }

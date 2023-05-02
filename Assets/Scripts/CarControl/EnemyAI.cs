@@ -4,36 +4,31 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    //nitro
-    private static float _minCheckNitroDelay = 1.5f;
-    private static float _maxCheckNitroDelay = 3f;
-    private static float _maxDistanceToPlayerToUseNitro = 20f;
-    private static float _minNitroValueToUse = 0.5f;
-
-    //rotate
-    private static float _percentOfNitroToStartRotating = 0.5f;
-    private static float _stopRotationDegree = 340f;
-    private static float _minTimeOnAirToStartRotate = 0.1f;
-
     private Car _car;
+
+    private PathCreation.VertexPath _road;
+
+    private EnemyAiRules _rules;
 
     private Transform _playerTransform;
 
     private Coroutine _nitroControlCoroutine;
     private Coroutine _rotateControlCoroutine;
 
-    public void Init(Car car, Transform playerTransform)
+    private bool _isRotate;
+
+    public void Init(Car car, PathCreation.VertexPath road, EnemyAiRules rules, Transform playerTransform)
     {
         _car = car;
+        _road = road;
+        _rules = rules;
         _playerTransform = playerTransform;
     }
 
     public void Activate()
     {
-        //_nitroControlCoroutine = StartCoroutine(NitroControl());
-        //_rotateControlCoroutine = StartCoroutine(RotateControl());
-
-        //_car.Deactivate();
+        _nitroControlCoroutine = StartCoroutine(NitroControl());
+        _rotateControlCoroutine = StartCoroutine(RotateControl());
     }
 
     public void Deactivate()
@@ -54,21 +49,21 @@ public class EnemyAI : MonoBehaviour
                 yield return StartCoroutine(StopUseNitro(stopValue));
             }
 
-            yield return new WaitForSeconds(Random.Range(_minCheckNitroDelay, _maxCheckNitroDelay));
+            yield return new WaitForSeconds(Random.Range( _rules.MinCheckNitroDelay, _rules.MaxCheckNitroDelay));
         }
     }
 
     private bool CanUseNitro()
     {
-        if (_car.AmoutOfNitro <= _minNitroValueToUse)
+        if (_car.PercentOfNitro <= _rules.MinNitroValueToUseInPercent)
             return false;
 
-        if (!_car.AnyPartOnRoad ||  _car.BlockAllAction)
+        if (!_car.AnyPartOnRoad ||  _car.BlockAllAction || _isRotate)
             return false;
 
         var distanceToPlayer = Mathf.Abs(_car.transform.position.z - _playerTransform.position.z);
 
-        if (distanceToPlayer > _maxDistanceToPlayerToUseNitro)
+        if (distanceToPlayer > _rules.MaxDistanceToPlayerToUseNitro)
             return false;
 
         return true;
@@ -78,14 +73,12 @@ public class EnemyAI : MonoBehaviour
     {
         var value = Random.Range(0f, _car.AmoutOfNitro);
 
-        value = Mathf.Clamp(value, _minNitroValueToUse, _car.AmoutOfNitro);
-
         return value;
     }
 
     private IEnumerator StopUseNitro(float stopValue)
     {
-        while (_car.AmoutOfNitro > stopValue)
+        while (_car.AmoutOfNitro > stopValue && !_isRotate)
         {
             yield return null;
         }
@@ -93,16 +86,20 @@ public class EnemyAI : MonoBehaviour
         _car.StopUseNitro();
     }
 
-    /*
-
     private IEnumerator RotateControl()
     {
         while (true)
         {
             var rotateDirection = GetRotateDirection();
 
-            if (rotateDirection != RotateDirection.None)
+            if (rotateDirection == RotateType.Stabilizate)
             {
+                yield return StartCoroutine(RotateStabilizate());
+            }
+
+            else if (rotateDirection != RotateType.None)
+            {
+                _isRotate = true;
                 _car.StartRotate(rotateDirection);
 
                 yield return StartCoroutine(StopRotate());
@@ -112,35 +109,60 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private RotateDirection GetRotateDirection()
+    private RotateType GetRotateDirection()
     {
-        if (_car.IsNitroUsed || _car.IsStabilizate || _car.BlockAllAction)
-            return RotateDirection.None;
+        var rotateDirection = RotateType.None;   
+        var point = GetNearestRoadPoint(_car.transform.position.z + _rules.CheckRoadDistance);
 
-        var percentOfNitro = _car.AmoutOfNitro / _car.MaxAmountOfNitro;
+        if (Mathf.Abs(point.y - _car.transform.position.y) < _rules.MinCheckedHeightToRotate)
+            rotateDirection = RotateType.Stabilizate;
 
-        if (percentOfNitro > _percentOfNitroToStartRotating)
-            return RotateDirection.None;
+        else if (!_car.BlockAllAction && _car.PercentOfNitro <= _rules.MinNitroPercentToIgnoreRotate)
+        {
+            if (!_car.FrontAxle.AnyWheelOnRoad)
+                rotateDirection = RotateType.Front;
 
-        //if (!_car.IsAxleOnRoad(RotateDirection.Forward))
-        //    return RotateDirection.Forward;
-
-        //if (!_car.IsAxleOnRoad(RotateDirection.Back))
-        //    return RotateDirection.Back;
+            else if (!_car.BackAxle.AnyWheelOnRoad)
+                rotateDirection = RotateType.Back;
+        }
         
-        return RotateDirection.None;
+        return rotateDirection;
     }
 
     private IEnumerator StopRotate()
     {
-        yield return new WaitForSeconds(0.1f);
-
-        while (_car.IsRotating && _car.CurrDegree < _stopRotationDegree)
+        while (!_car.AnyPartOnRoad && Mathf.Abs(_car.RotatedDegreeInAir) < _rules.StopRotationDegree)
         {
             yield return null;
         }
 
+        _isRotate = false;
         _car.StopRotate();
+
+        if (!_car.AnyWheelOnRoad)
+            yield return StartCoroutine(RotateStabilizate());
     }
-    */
+
+    private IEnumerator RotateStabilizate()
+    {
+        while (!_car.AllWheelsOnRoad)
+        {
+            if (_car.InspectorDegree > _rules.StabilizeDegree)
+                _car.AddMinAngularVelocity(-1, _rules.StabilizeSpeedCoef);
+            
+            if (_car.InspectorDegree < -_rules.StabilizeDegree)
+                _car.AddMinAngularVelocity(1, _rules.StabilizeSpeedCoef);
+
+            yield return null;
+        }
+    }
+
+    private Vector3 GetNearestRoadPoint(float z)
+    {
+        var points = new List<Vector3>(_road.localPoints);
+
+        points.Sort((a,b) =>  (Mathf.Abs(z - a.z)).CompareTo(Mathf.Abs(z - b.z)));
+
+        return points[0];
+    }
 }
