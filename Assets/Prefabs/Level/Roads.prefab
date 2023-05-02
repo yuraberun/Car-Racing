@@ -391,14 +391,14 @@ MonoBehaviour:
     vertexPathUpToDate: 1
     vertexPathMaxAngleError: 0.03
     vertexPathMinVertexSpacing: 0.01
-    showTransformTool: 1
+    showTransformTool: 0
     showPathBounds: 0
     showPerSegmentBounds: 0
-    displayAnchorPoints: 1
+    displayAnchorPoints: 0
     displayControlPoints: 1
     bezierHandleScale: 1
     globalDisplaySettingsFoldout: 0
-    keepConstantHandleSize: 1
+    keepConstantHandleSize: 0
     showNormalsInVertexMode: 0
     showBezierPathInVertexMode: 0
     showDisplayOptions: 1
@@ -422,7 +422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathCreator: {fileID: 743505738172312490}
-  autoUpdate: 1
+  autoUpdate: 0
   roadWidth: 4
   thickness: 1
   flattenSurface: 0
@@ -528,7 +528,7 @@ MeshCollider:
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 0
-  m_CookingOptions: 0
+  m_CookingOptions: -1
   m_Mesh: {fileID: 0}
 --- !u!1 &743505739513071908
 GameObject:
@@ -859,14 +859,14 @@ MonoBehaviour:
     vertexPathUpToDate: 1
     vertexPathMaxAngleError: 0.03
     vertexPathMinVertexSpacing: 0.01
-    showTransformTool: 1
+    showTransformTool: 0
     showPathBounds: 0
     showPerSegmentBounds: 0
-    displayAnchorPoints: 1
+    displayAnchorPoints: 0
     displayControlPoints: 1
     bezierHandleScale: 1
     globalDisplaySettingsFoldout: 0
-    keepConstantHandleSize: 1
+    keepConstantHandleSize: 0
     showNormalsInVertexMode: 0
     showBezierPathInVertexMode: 0
     showDisplayOptions: 1
@@ -996,7 +996,7 @@ MeshCollider:
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 0
-  m_CookingOptions: 0
+  m_CookingOptions: -1
   m_Mesh: {fileID: 0}
 --- !u!1 &743505739847028984
 GameObject:
