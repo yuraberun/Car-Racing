@@ -290,7 +290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathCreator: {fileID: 4901652689421613651}
-  autoUpdate: 0
+  autoUpdate: 1
   roadWidth: 4
   thickness: 1
   flattenSurface: 0
@@ -309,7 +309,7 @@ GameObject:
   - component: {fileID: 755776971228357398}
   - component: {fileID: 5087533928732190436}
   - component: {fileID: 6823615784126260916}
-  - component: {fileID: 2006019401710005337}
+  - component: {fileID: 8757216136308238493}
   m_Layer: 3
   m_Name: Road Mesh Holder
   m_TagString: Untagged
@@ -384,7 +384,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2006019401710005337
+--- !u!64 &8757216136308238493
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -409,7 +409,7 @@ GameObject:
   - component: {fileID: 2637845392549036424}
   - component: {fileID: 248690754993306810}
   - component: {fileID: 8555968311948000647}
-  - component: {fileID: 3654213328724725867}
+  - component: {fileID: 2644775896561993595}
   m_Layer: 3
   m_Name: Road Mesh Holder
   m_TagString: Untagged
@@ -484,7 +484,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3654213328724725867
+--- !u!64 &2644775896561993595
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -690,7 +690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathCreator: {fileID: 914164023741770290}
-  autoUpdate: 0
+  autoUpdate: 1
   roadWidth: 4
   thickness: 1
   flattenSurface: 0
@@ -760,6 +760,10 @@ PrefabInstance:
     - target: {fileID: 932840477509286750, guid: ebfd41e800401694fad333415036093d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1383035329093090646, guid: ebfd41e800401694fad333415036093d, type: 3}
+      propertyPath: m_Size.y
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 6717069686635984154, guid: ebfd41e800401694fad333415036093d, type: 3}
       propertyPath: m_Name
