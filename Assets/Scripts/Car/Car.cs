@@ -404,7 +404,10 @@ public class Car : MonoBehaviour
 
     public void OnStabilizationStart()
     {
-        StopAllCoroutines();
+        StopAutoMove();
+        StopRotate();
+        StopUseNitro();
+        StopCalculateFlip();
         BlockActions();
     }
 
