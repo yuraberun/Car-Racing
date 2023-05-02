@@ -284,10 +284,10 @@ MonoBehaviour:
     leftWheel: {fileID: 8402413360798121776}
     rightWheel: {fileID: 8007253632838470822}
   _autoSpeed: 425
-  _brakePower: 50
+  _brakePower: 75
   _startMoveSpeed: 2
   _maxAutoMoveSpeed: 12.5
-  _nitroPower: 425
+  _nitroPower: 375
   _maxSpeedWithNitro: 30
   _maxAmountOfNitro: 2
   _startRotateSpeed: 0.2
@@ -302,8 +302,8 @@ Rigidbody:
   m_GameObject: {fileID: 5154303358389193167}
   serializedVersion: 2
   m_Mass: 2400
-  m_Drag: 0.1
-  m_AngularDrag: 0.1
+  m_Drag: 0.2
+  m_AngularDrag: 0.15
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
