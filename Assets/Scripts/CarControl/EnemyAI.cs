@@ -15,16 +15,16 @@ public class EnemyAI : MonoBehaviour
     private static float _stopRotationDegree = 340f;
     private static float _minTimeOnAirToStartRotate = 0.1f;
 
-    private CarBase _carBase;
+    private Car _car;
 
     private Transform _playerTransform;
 
     private Coroutine _nitroControlCoroutine;
     private Coroutine _rotateControlCoroutine;
 
-    public void Init(CarBase carBase, Transform playerTransform)
+    public void Init(Car car, Transform playerTransform)
     {
-        _carBase = carBase;
+        _car = car;
         _playerTransform = playerTransform;
     }
 
@@ -33,7 +33,7 @@ public class EnemyAI : MonoBehaviour
         //_nitroControlCoroutine = StartCoroutine(NitroControl());
         //_rotateControlCoroutine = StartCoroutine(RotateControl());
 
-        _carBase.Deactivate();
+        //_car.Deactivate();
     }
 
     public void Deactivate()
@@ -47,9 +47,9 @@ public class EnemyAI : MonoBehaviour
         {
             if (CanUseNitro())
             {
-                var stopValue = _carBase.AmoutOfNitro - GetRandomNitroValue();
+                var stopValue = _car.AmoutOfNitro - GetRandomNitroValue();
 
-                _carBase.StartUseNitro();
+                _car.StartUseNitro();
 
                 yield return StartCoroutine(StopUseNitro(stopValue));
             }
@@ -60,14 +60,13 @@ public class EnemyAI : MonoBehaviour
 
     private bool CanUseNitro()
     {
-        if (_carBase.AmoutOfNitro <= _minNitroValueToUse)
+        if (_car.AmoutOfNitro <= _minNitroValueToUse)
             return false;
 
-        if (!_carBase.AnyWheelOnRoad || _carBase.IsRotating || _carBase.IsStabilizate
-            || _carBase.BlockAllAction)
+        if (!_car.AnyPartOnRoad ||  _car.BlockAllAction)
             return false;
 
-        var distanceToPlayer = Mathf.Abs(_carBase.transform.position.z - _playerTransform.position.z);
+        var distanceToPlayer = Mathf.Abs(_car.transform.position.z - _playerTransform.position.z);
 
         if (distanceToPlayer > _maxDistanceToPlayerToUseNitro)
             return false;
@@ -77,21 +76,21 @@ public class EnemyAI : MonoBehaviour
 
     private float GetRandomNitroValue()
     {
-        var value = Random.Range(0f, _carBase.AmoutOfNitro);
+        var value = Random.Range(0f, _car.AmoutOfNitro);
 
-        value = Mathf.Clamp(value, _minNitroValueToUse, _carBase.AmoutOfNitro);
+        value = Mathf.Clamp(value, _minNitroValueToUse, _car.AmoutOfNitro);
 
         return value;
     }
 
     private IEnumerator StopUseNitro(float stopValue)
     {
-        while (_carBase.AmoutOfNitro > stopValue)
+        while (_car.AmoutOfNitro > stopValue)
         {
             yield return null;
         }
 
-        _carBase.StopUseNitro();
+        _car.StopUseNitro();
     }
 
     /*
@@ -104,7 +103,7 @@ public class EnemyAI : MonoBehaviour
 
             if (rotateDirection != RotateDirection.None)
             {
-                _carBase.StartRotate(rotateDirection);
+                _car.StartRotate(rotateDirection);
 
                 yield return StartCoroutine(StopRotate());
             }
@@ -115,18 +114,18 @@ public class EnemyAI : MonoBehaviour
 
     private RotateDirection GetRotateDirection()
     {
-        if (_carBase.IsNitroUsed || _carBase.IsStabilizate || _carBase.BlockAllAction)
+        if (_car.IsNitroUsed || _car.IsStabilizate || _car.BlockAllAction)
             return RotateDirection.None;
 
-        var percentOfNitro = _carBase.AmoutOfNitro / _carBase.MaxAmountOfNitro;
+        var percentOfNitro = _car.AmoutOfNitro / _car.MaxAmountOfNitro;
 
         if (percentOfNitro > _percentOfNitroToStartRotating)
             return RotateDirection.None;
 
-        //if (!_carBase.IsAxleOnRoad(RotateDirection.Forward))
+        //if (!_car.IsAxleOnRoad(RotateDirection.Forward))
         //    return RotateDirection.Forward;
 
-        //if (!_carBase.IsAxleOnRoad(RotateDirection.Back))
+        //if (!_car.IsAxleOnRoad(RotateDirection.Back))
         //    return RotateDirection.Back;
         
         return RotateDirection.None;
@@ -136,12 +135,12 @@ public class EnemyAI : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
 
-        while (_carBase.IsRotating && _carBase.CurrDegree < _stopRotationDegree)
+        while (_car.IsRotating && _car.CurrDegree < _stopRotationDegree)
         {
             yield return null;
         }
 
-        _carBase.StopRotate();
+        _car.StopRotate();
     }
     */
 }

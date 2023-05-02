@@ -1,4 +1,4 @@
-public class FinishedCarInfo
+public class FinishCarInfo
 {
     public CarName carName;
 
@@ -7,7 +7,7 @@ public class FinishedCarInfo
 
     public bool isPlayer;
 
-    public FinishedCarInfo(CarName carName, int position, int completeTime, bool isPlayer)
+    public FinishCarInfo(CarName carName, int position, int completeTime, bool isPlayer)
     {
         this.carName = carName;
         this.position = position;

@@ -16,11 +16,11 @@ public class LevelController : SingletonComponent<LevelController>
     [Header("Settings")]
     [SerializeField] private float _showResultsWindowDelay;
 
-    private List<FinishedCarInfo> _finishedCarInfos = new List<FinishedCarInfo>();
+    private List<FinishCarInfo> _finishCarInfos = new List<FinishCarInfo>();
 
-    public CarBase PlayerCar { get; private set; }
+    public Car PlayerCar { get; private set; }
 
-    public CarBase EnemyCar { get; private set; }
+    public Car EnemyCar { get; private set; }
 
     public Player Player { get; private set; }
 
@@ -42,19 +42,19 @@ public class LevelController : SingletonComponent<LevelController>
 
         var playerCarName = (CarName)PlayerPrefs.GetInt("PlayerCar");
         var playerCarPrefab = _carsCollection.GetCarPrefab(playerCarName);
-        PlayerCar = Instantiate(playerCarPrefab, _playerCarSpawnTransform.position, Quaternion.identity).GetComponent<CarBase>();
+        PlayerCar = Instantiate(playerCarPrefab, _playerCarSpawnTransform.position, Quaternion.identity).GetComponent<Car>();
         PlayerCar.Init(true);
         Player = gameObject.AddComponent<Player>();
         Player.Init(PlayerCar);
 
         var enemyCarPrefab = _carsCollection.GetRandomCarPrefab();
-        EnemyCar = Instantiate(enemyCarPrefab, _enemyCarSpawnTransform.position, Quaternion.identity).GetComponent<CarBase>();
-        EnemyCar.Init(false);
-        EnemyAI = gameObject.AddComponent<EnemyAI>();
-        EnemyAI.Init(EnemyCar, PlayerCar.transform);
+        //EnemyCar = Instantiate(enemyCarPrefab, _enemyCarSpawnTransform.position, Quaternion.identity).GetComponent<Car>();
+        //EnemyCar.Init(false);
+        //EnemyAI = gameObject.AddComponent<EnemyAI>();
+        //EnemyAI.Init(EnemyCar, PlayerCar.transform);
 
-        _finishedCarInfos.Clear();
         LevelHUD.Instance.Init();
+        _finishCarInfos.Clear();
         _levelCamera.Init(PlayerCar.transform);
         _levelCamera.Activate();
     }
@@ -62,10 +62,10 @@ public class LevelController : SingletonComponent<LevelController>
     public void StartLevel()
     {
         Player.UnblockInput();
-        EnemyAI.Activate();
-
         PlayerCar.Activate();
-        EnemyCar.Activate();
+        
+        //EnemyAI.Activate();
+        //EnemyCar.Activate();
     }
 
     public void EndLevel()
@@ -78,11 +78,11 @@ public class LevelController : SingletonComponent<LevelController>
 
     public void OnAnyCarFinish(CarName carName, int completeTime, bool isPlayer)
     {
-        var position = _finishedCarInfos.Count + 1;
+        var position = _finishCarInfos.Count + 1;
 
-        _finishedCarInfos.Add(new FinishedCarInfo(carName, position, completeTime, isPlayer));
+        _finishCarInfos.Add(new FinishCarInfo(carName, position, completeTime, isPlayer));
 
-        if (isPlayer || _finishedCarInfos.Count == 2)
+        if (isPlayer || _finishCarInfos.Count == 2)
         {   
             EndLevel();
             Invoke(nameof(OpenResultsWindow), _showResultsWindowDelay);
@@ -91,7 +91,7 @@ public class LevelController : SingletonComponent<LevelController>
 
     private void OpenResultsWindow()
     {
-        LevelHUD.Instance.levelResultsWindow.Open(_finishedCarInfos);
+        LevelHUD.Instance.levelResultsWindow.Open(_finishCarInfos);
     }
 
     public void RestartLevel()

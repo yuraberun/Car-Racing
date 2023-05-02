@@ -10,8 +10,8 @@ public class CarRulesConfig : ScriptableObject
     [SerializeField][Range(0f, 1f)] private float _nitroBonusAfterStabilize;
 
     [Header("Flip")]
-    [SerializeField] private float _degreesToForwardFlip;
-    [SerializeField][Range(0f, 1f)] private float _forwardFlipNitroReward;
+    [SerializeField] private float _degreesToFrontFlip;
+    [SerializeField][Range(0f, 1f)] private float _frontFlipNitroReward;
 
     [SerializeField] private float _degreesToBackFlip;
     [SerializeField][Range(0f, 1f)] private float _backFlipNitroReward;
@@ -24,11 +24,11 @@ public class CarRulesConfig : ScriptableObject
 
     public float NitroBonusAfterStabilize => _nitroBonusAfterStabilize;
 
-    public float DegreesToForwardFlip => _degreesToForwardFlip;
+    public float DegreesToFrontFlip => _degreesToFrontFlip;
 
     public float DegreesToBackFlip => _degreesToBackFlip;
 
-    public float ForwardFlipNitroReward => _forwardFlipNitroReward;
+    public float FrontFlipNitroReward => _frontFlipNitroReward;
 
     public float BackFlipNitroReward => _backFlipNitroReward;
 }

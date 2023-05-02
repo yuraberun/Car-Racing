@@ -21,9 +21,9 @@ public class LevelHUD : SingletonComponent<LevelHUD>
     [SerializeField] private TextMeshProUGUI _nitroBonusNameLabel;
     [SerializeField] private TextMeshProUGUI _nitroBonusValueLabel;
 
-    [SerializeField] private string _forwardFlipText;
+    [SerializeField] private string _frontFlipText;
     [SerializeField] private string _backFlipText;
-    [SerializeField] private string _stabilizationFlipText;
+    [SerializeField] private string _stabilizateFlipText;
 
     [SerializeField] private float _showTime;
     [SerializeField] private float _fadeTime;
@@ -55,11 +55,11 @@ public class LevelHUD : SingletonComponent<LevelHUD>
         _nitroSlider.value = percent;
     }
 
-    public void OnPlayerCarFlip(RotateDirection flipType, float nitroPercentBonus, int flipsInARows)
+    public void OnPlayerCarFlip(RotateType flipType, float nitroPercentBonus, int flipsInARows)
     {
-        var bonusName = flipType == RotateDirection.Forward ? _forwardFlipText
-            : flipType == RotateDirection.Back ? _backFlipText
-            : flipType == RotateDirection.Stabilization ? _stabilizationFlipText : "";
+        var bonusName = flipType == RotateType.Front ? _frontFlipText
+            : flipType == RotateType.Back ? _backFlipText
+            : flipType == RotateType.Stabilizate ? _stabilizateFlipText : "";
 
         if (bonusName != "")
         {
@@ -71,41 +71,8 @@ public class LevelHUD : SingletonComponent<LevelHUD>
                 valueText += " X" + flipsInARows;
 
             _nitroBonusValueLabel.text = valueText;
-            _nitroBonus.SetActive(true);
-            
-            var color = _nitroBonusNameLabel.color;
-            color.a = 1f;
-            _nitroBonusNameLabel.color = color;
-            _nitroBonusValueLabel.color = color;
-
-            if (_fadeCoroutine != null)
-                StopCoroutine(_fadeCoroutine);
-
-            _fadeCoroutine = StartCoroutine(FadeNitroBonusText());
+            _animator.SetTrigger("AddNitro");
         }
-    }
-
-    private IEnumerator FadeNitroBonusText()
-    {
-        yield return new WaitForSeconds(_showTime);
-
-        var elapsedTime = 0f;
-        var startAlpha = _nitroBonusNameLabel.color.a;
-        var color = _nitroBonusNameLabel.color;
-
-        while (elapsedTime <= _fadeTime)
-        {
-            color.a = Mathf.Lerp(startAlpha, 0, elapsedTime / _fadeTime);
-
-            _nitroBonusNameLabel.color = color;
-            _nitroBonusValueLabel.color = color;
-
-            elapsedTime += Time.deltaTime;
-
-            yield return null;
-        }
-
-        _nitroBonus.gameObject.SetActive(false);
     }
     
     private void OnButtonClick()

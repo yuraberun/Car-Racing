@@ -9,6 +9,8 @@ public class MenuHUD : SingletonComponent<MenuHUD>
     [Header("Components")]
     [SerializeField] private Animator _animator;
 
+    [SerializeField] private MenuCamera _menuCamera;
+
     private void Awake()
     {
         Init();
@@ -37,6 +39,7 @@ public class MenuHUD : SingletonComponent<MenuHUD>
     public void PlayHideGarageAnimation()
     {
         _animator.SetTrigger("HideGarage");
+        _menuCamera.MoveToDefaultPosition();
     }
 
     private void OnButtonClick()
@@ -56,6 +59,7 @@ public class MenuHUD : SingletonComponent<MenuHUD>
         OnButtonClick();
 
         _animator.SetTrigger("OpenGarage");
+        _menuCamera.MoveToGaragePosition();
     }
 
     public void OnSettingsButtonClick()

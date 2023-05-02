@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _timeToStartStabilizeRotation: 2
   _stabilizeRotationSpeed: 250
-  _blockRotationDistance: 0.18
-  _nitroBonusAfterStabilize: 0.6
-  _degreesToForwardFlip: 330
-  _forwardFlipNitroReward: 0.75
-  _degreesToBackFlip: 330
+  _blockRotationDistance: 0.05
+  _nitroBonusAfterStabilize: 0.35
+  _degreesToFrontFlip: 325
+  _frontFlipNitroReward: 0.75
+  _degreesToBackFlip: 305
   _backFlipNitroReward: 0.5

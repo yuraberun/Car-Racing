@@ -5,12 +5,12 @@ public class Player : MonoBehaviour
 {
     private PlayerInputs _inputs;
 
-    private CarBase _car;
+    private Car _car;
 
-    public void Init(CarBase carBase)
+    public void Init(Car car)
     {
         _inputs = new PlayerInputs();
-        _car = carBase;
+        _car = car;
 
         SubscribeToInput();
         UnblockInput();
@@ -80,17 +80,17 @@ public class Player : MonoBehaviour
 
     private void OnPressNitroButton(InputAction.CallbackContext callBack)
     {
-        _car.StartAcceleration();
+        _car.StartUseNitro();
     }
 
     private void OnUpNitroButton(InputAction.CallbackContext callBack)
     {
-        _car.StopAcceleration();
+        _car.StopUseNitro();
     }
 
     private void OnPressRotateForwardButton(InputAction.CallbackContext callBack)
     {
-        _car.StartRotate(RotateDirection.Forward);
+        _car.StartRotate(RotateType.Front);
     }
 
     private void OnUpRotateForwardButton(InputAction.CallbackContext callBack)
@@ -101,7 +101,7 @@ public class Player : MonoBehaviour
 
     private void OnPressRotateBackButton(InputAction.CallbackContext callBack)
     {
-        _car.StartRotate(RotateDirection.Back);
+        _car.StartRotate(RotateType.Back);
     }
 
     private void OnUpRotateBackButton(InputAction.CallbackContext callBack)

@@ -19,9 +19,9 @@ public class GarageWindow : Window
     [SerializeField] private Vector3 _carPosition;
     [SerializeField] private Vector3 _carRotation;
 
-    private List<CarBase> _cars = new List<CarBase>();
+    private List<Car> _cars = new List<Car>();
 
-    private CarBase _currCar;
+    private Car _currCar;
 
     private int _currPlayerCarIndex;
 
@@ -35,7 +35,7 @@ public class GarageWindow : Window
             if (currPlayerCarName == carInfo.carName)
                 _currPlayerCarIndex = carsInfos.IndexOf(carInfo);
 
-            var car = Instantiate(carInfo.prefab, _carContainer).GetComponent<CarBase>();
+            var car = Instantiate(carInfo.prefab, _carContainer).GetComponent<Car>();
             car.gameObject.SetActive(false);
             _cars.Add(car);
         }
@@ -73,11 +73,13 @@ public class GarageWindow : Window
 
     private void ResetLabels()
     {
-        _massLabel.text = _currCar.Mass + "";
-        _motorPowerLabel.text = _currCar.MotorPower + "";
-        _nitroPowerLabel.text = _currCar.NitroPower + "";
-        _amountOfNitroLabel.text = _currCar.MaxAmountOfNitro + "";
-        _rotateSpeedLabel.text = _currCar.RotateSpeed + "";
+        _currCar.GetInfo(out float mass, out float motorPower, out float nitroPower, out float maxAmountOfNitro, out float rotateSpeed);
+
+        _massLabel.text = mass + "";
+        _motorPowerLabel.text = motorPower + "";
+        _nitroPowerLabel.text = nitroPower + "";
+        _amountOfNitroLabel.text = maxAmountOfNitro + "";
+        _rotateSpeedLabel.text = rotateSpeed + "";
     }
 
     public void OnBackButtonClick()

@@ -12,7 +12,7 @@ public class LevelResultsWindow : Window
     [SerializeField] private TextMeshProUGUI _completionTimeLabel;
     [SerializeField] private TextMeshProUGUI _completionTimeDifferenceLabel;
 
-    public void Open(List<FinishedCarInfo> finishedCarInfos)
+    public void Open(List<FinishCarInfo> finishedCarInfos)
     {
         var playerInfo = finishedCarInfos.Find(info => info.isPlayer);
 

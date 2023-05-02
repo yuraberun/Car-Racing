@@ -73,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 3377968329991709778}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2, z: 4}
-  m_LocalScale: {x: 1.75, y: 1.75, z: 1.75}
+  m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4930514042436550447}
@@ -97,26 +97,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _carName: 2
-  carRulesConfig: {fileID: 11400000, guid: 022a18dbc01aaab4bb73b929407b7dc5, type: 2}
-  rb: {fileID: 3377968329991709776}
-  centerOfMass: {fileID: 3377968330633375464}
-  nitroEffect: {fileID: 7190534076107499600}
-  axles:
-  - axlePosition: 1
+  _rulesConfig: {fileID: 11400000, guid: 022a18dbc01aaab4bb73b929407b7dc5, type: 2}
+  _rigidbody: {fileID: 3377968329991709776}
+  _nitroEffect: {fileID: 7190534076107499600}
+  _centerOfMass: {fileID: 3377968330633375464}
+  _axles:
+  - type: 1
     leftWheel: {fileID: 3377968330571214480}
     rightWheel: {fileID: 3377968330253517556}
-  - axlePosition: 2
+  - type: 2
     leftWheel: {fileID: 3377968330165307991}
     rightWheel: {fileID: 3377968330461255385}
-  autoSpeed: 425
-  brakePower: 75
-  nitroPower: 475
-  startMoveSpeed: 2
-  maxAutoMoveSpeed: 13.5
-  maxSpeedWithNitro: 35
-  maxAmountOfNitro: 2.1
-  rotateSpeed: 220
-  angularVelocity: 1.3
+  _autoSpeed: 480
+  _brakePower: 225
+  _startMoveSpeed: 2
+  _maxAutoMoveSpeed: 12
+  _nitroPower: 575
+  _maxSpeedWithNitro: 30
+  _maxAmountOfNitro: 2.4
+  _startRotateSpeed: 0.2
+  _maxRotateSpeed: 3.75
+  _rotatePower: 8
 --- !u!54 &3377968329991709776
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -125,9 +126,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3377968329991709778}
   serializedVersion: 2
-  m_Mass: 3200
-  m_Drag: 0.01
-  m_AngularDrag: 0.05
+  m_Mass: 3000
+  m_Drag: 0.2
+  m_AngularDrag: 0.2
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
